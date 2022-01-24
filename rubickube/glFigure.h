@@ -19,6 +19,7 @@ namespace OpenGL {
 		~glFigure();
 	protected:
 		GLuint VAO =0, VBO =0, EBO =0;
+		glTexture* texture;
 	};
 	
 	

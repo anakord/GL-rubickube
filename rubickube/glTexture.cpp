@@ -3,7 +3,6 @@
 using namespace OpenGL;
 
 glTexture::glTexture(const std::string& path) {
-	/*
 	glGenTextures(1, &handle);
 	glBindTexture(GL_TEXTURE_2D, handle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -13,7 +12,6 @@ glTexture::glTexture(const std::string& path) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0);
-	*/
 }
 
 glTexture::~glTexture() {
