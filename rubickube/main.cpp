@@ -6,7 +6,7 @@
 // APPLICATION RUNNER
 int main()
 {
-	OpenGL::App app(800, 600);
+	OpenGL::glApp app(800, 600);
 	app.run();
 	return 0;
 }

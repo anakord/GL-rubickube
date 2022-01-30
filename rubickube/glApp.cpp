@@ -2,7 +2,7 @@
 
 using namespace OpenGL;
 
-App::App(int width, int height)
+glApp::glApp(int width, int height)
 {
     this->width = width;
     this->height = height;
@@ -18,7 +18,7 @@ App::App(int width, int height)
         std::cout << "Application doesn't run." << std::endl;
 }
 
-bool App::initWindow() 
+bool glApp::initWindow()
 {
     std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
     glfwInit();
@@ -45,7 +45,7 @@ bool App::initWindow()
     return true;
 }
 
-bool App::linkGLEW()
+bool glApp::linkGLEW()
 {
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -56,7 +56,7 @@ bool App::linkGLEW()
     return true;
 }
 
-void App::loadShaders()
+void glApp::loadShaders()
 {
     sh_program = new glShaderProgram();
     sh_program->link();
@@ -66,7 +66,7 @@ void App::loadShaders()
         std::cout << "ERROR (PROGRAM): LINK_FAILED" << std::endl;
 }
 
-void App::loadCamera() 
+void glApp::loadCamera()
 {
     glMatrixMode(GL_PROJECTION);
     glEnable(GL_DEPTH_TEST);
@@ -74,14 +74,14 @@ void App::loadCamera()
     camera = new glCamera(width, height);
 }
 
-void App::loadFigures()
+void glApp::loadFigures()
 {
     if(sh_program)
         figures.push_back(new Cube(sh_program->getHandle()));
 }
 
 
-void App::run()
+void glApp::run()
 {
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents(); // запрос на ввод
@@ -99,18 +99,18 @@ void App::run()
 }
 
 // callbacks
-void App::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) 
+void glApp::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {   
 
 }
 
-void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) 
+void glApp::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 
 }
 
 
-App::~App() 
+glApp::~glApp()
 {
     if (sh_program)
         delete sh_program;

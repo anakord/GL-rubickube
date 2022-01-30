@@ -20,12 +20,12 @@
 // Windowed opengl Application Class
 namespace OpenGL {
 
-	class App {
+	class glApp {
 	public:
-		App(int width, int height);
+		glApp(int width, int height);
 		void run();
 		
-		~App();
+		~glApp();
 	private:
 		int width, height; // размеры окна
 		GLFWwindow* window;	
