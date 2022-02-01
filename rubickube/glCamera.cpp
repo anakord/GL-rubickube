@@ -29,20 +29,11 @@ void glCamera::changeDegree(double x_k, double y_k) {
         Pitch = 0.0;
 }
 
-void glCamera::setPosition(GLuint sh_handler)
+void glCamera::setPosition()
 {
     view = glm::scale(glm::lookAt(Pos, Pos + Front, Up), glm::vec3(Scale));
     view = glm::rotate(view, GLfloat(Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
     view = glm::rotate(view, GLfloat(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));
-    GLint loc; // указатель на uniform шейдера
-    loc = glGetUniformLocation(sh_handler, "model");
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(model));
-
-    loc = glGetUniformLocation(sh_handler, "view");
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
-
-    loc = glGetUniformLocation(sh_handler, "projection");
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 glCamera::~glCamera() {

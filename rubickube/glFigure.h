@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "glTexture.h"
+#include "glShader.h"
 #include "typedef.h"
 
 namespace OpenGL {
@@ -30,27 +31,32 @@ namespace OpenGL {
 			static const glm::vec3 WHITE;
 			static const glm::vec3 NONE;
 		};
-		glFigure();
-		virtual void draw() = 0;
+		glFigure(glm::mat4 position);
+		
+		glm::mat4 getModel() { return model; };
+		virtual void draw(glShaderProgram* sh_program) = 0;
 		~glFigure();
 	protected:
+		glm::mat4 model = glm::mat4(1.0f);
 		GLuint VAO =0, VBO =0, EBO =0;
-
 		glTexture* texture;
 	};
-	
 	
 	// glFigure REALIZATIONS
 	class Cube :
 		public glFigure
 	{
 	public:
-		// 1 - 6 - colors of cube sides
-		Cube(glm::vec3 BACK_COLOR, glm::vec3 FRONT_COLOR,
-			glm::vec3 LEFT_COLOR, glm::vec3 RIGHT_COLOR,
-			glm::vec3 BOTTOM_COLOR, glm::vec3 TOP_COLOR);
+		/*
+		    1 - position, 
+			2 - 6 - colors of cube sides
+		*/
+		Cube(glm::mat4 position, 
+			glm::vec3 back_color, glm::vec3 front_color,
+			glm::vec3 left_color, glm::vec3 right_color,
+			glm::vec3 bottom_color, glm::vec3 top_color);
 
-		void draw() override;
+		void draw(glShaderProgram* sh_program) override;
 		~Cube();
 	private:
 		

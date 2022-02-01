@@ -34,7 +34,8 @@ namespace OpenGL {
 		GLuint getHandle() { return handle; }
 		void link();
 		bool status(); // возвращает результат линковки и пишет результат в консоль
-		void Use(); // использовать шейдерную программу
+		void loadModel(glm::mat4 model); // загружает место модели
+		void Use(glm::mat4 view, glm::mat4 projection); // использовать шейдерную программу с параметрами камеры
 		~glShaderProgram();
 	
 	private:

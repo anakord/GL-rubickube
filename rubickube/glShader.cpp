@@ -90,8 +90,25 @@ bool glShaderProgram::status()
     return true;
 }
 
-void glShaderProgram::Use() {
+void glShaderProgram::loadModel(glm::mat4 model)
+{
+    GLint loc; // указатель на uniform шейдера
+    loc = glGetUniformLocation(handle, "model");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(model));
+}
+
+void glShaderProgram::Use(glm::mat4 view, glm::mat4 projection) {
+    
     glUseProgram(handle);
+    
+    GLint loc; // указатель на uniform шейдера
+
+    loc = glGetUniformLocation(handle, "view");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(view));
+
+    loc = glGetUniformLocation(handle, "projection");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(projection));
+
 }
 
 glShaderProgram::~glShaderProgram()
