@@ -8,7 +8,7 @@ glFigure::glFigure() {
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
-    texture = new glTexture("C:\\Users\\ruzin\\source\\repos\\rubickube\\rubickube\\textures\\orange.png");
+    texture = new glTexture("side.png");
 
 }
 
