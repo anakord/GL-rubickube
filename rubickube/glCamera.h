@@ -42,6 +42,6 @@ namespace OpenGL {
 		double ScaleSpeed = 0.08;
 		
 		double Pitch =0.0, Yaw =0.0;
-		double Speed = 0.1;
+		double Speed = 0.05;
 	};
 }
