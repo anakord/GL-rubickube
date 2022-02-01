@@ -3,6 +3,15 @@
 
 using namespace OpenGL;
 
+
+const glm::vec3 glFigure::Color::RED    = glm::vec3(1.0f, 0.0f, 0.0f);
+const glm::vec3 glFigure::Color::GREEN  = glm::vec3(0.0f, 1.0f, 0.0f);
+const glm::vec3 glFigure::Color::BLUE   = glm::vec3(0.0f, 0.0f, 1.0f);
+const glm::vec3 glFigure::Color::YELLOW = glm::vec3(1.0f, 1.0f, 0.0f);
+const glm::vec3 glFigure::Color::PURPLE = glm::vec3(1.0f, 0.0f, 1.0f);
+const glm::vec3 glFigure::Color::WHITE  = glm::vec3(1.0f, 1.0f, 1.0f);
+const glm::vec3 glFigure::Color::NONE   = glm::vec3(0.0f, 0.0f, 0.0f);
+
 glFigure::glFigure() {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -22,60 +31,59 @@ glFigure::~glFigure() {
 
 // CUBE
 
-Cube::Cube(GLuint sh_program)
+Cube::Cube(glm::vec3 BACK_COLOR, glm::vec3 FRONT_COLOR, 
+           glm::vec3 LEFT_COLOR, glm::vec3 RIGHT_COLOR, 
+           glm::vec3 BOTTOM_COLOR, glm::vec3 TOP_COLOR)
     :glFigure() {
 
-    /* TODO: to another entity
-    glColor3f(1.0f, 0.0f, 0.0f); //красный
-    glColor3f(0.0f, 1.0f, 0.0f); //синий
-    glColor3f(0.0f, 0.0f, 1.0f); //зеленый
-    glColor3f(1.0f, 1.0f, 0.0f); //желтый
-    glColor3f(1.0f, 0.0f, 1.0f); //пурпурный
-    glColor3f(1.0f, 1.0f, 1.0f); //белый
-    */ 
-
-    GLfloat vertices[] = {
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-                                                    
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-                                                    
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-                                                    
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f, 0.0f,
-                                                    
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  0.0f, 1.0f,
-                                                    
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,  0.0f, 1.0f
+    vertex vertices[] = {
+                                         // BACK
+       glm::vec3(-0.5f, -0.5f, -0.5f),  BACK_COLOR,  glm::vec2(0.0f, 0.0f),
+       glm::vec3( 0.5f, -0.5f, -0.5f),  BACK_COLOR,  glm::vec2(1.0f, 0.0f),
+       glm::vec3( 0.5f,  0.5f, -0.5f),  BACK_COLOR,  glm::vec2(1.0f, 1.0f),
+       glm::vec3( 0.5f,  0.5f, -0.5f),  BACK_COLOR,  glm::vec2(1.0f, 1.0f),
+       glm::vec3(-0.5f,  0.5f, -0.5f),  BACK_COLOR,  glm::vec2(0.0f, 1.0f),
+       glm::vec3(-0.5f, -0.5f, -0.5f),  BACK_COLOR,  glm::vec2(0.0f, 0.0f),
+                                        
+                                         // FRONT
+       glm::vec3(-0.5f, -0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(0.0f, 0.0f),
+       glm::vec3( 0.5f, -0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(1.0f, 0.0f),
+       glm::vec3( 0.5f,  0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(1.0f, 1.0f),
+       glm::vec3( 0.5f,  0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(1.0f, 1.0f),
+       glm::vec3(-0.5f,  0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(0.0f, 1.0f),
+       glm::vec3(-0.5f, -0.5f,  0.5f),  FRONT_COLOR,  glm::vec2(0.0f, 0.0f),
+                                        
+                                         // LEFT
+        glm::vec3(-0.5f,  0.5f,  0.5f), LEFT_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-0.5f,  0.5f, -0.5f), LEFT_COLOR,  glm::vec2(1.0f, 1.0f),
+        glm::vec3(-0.5f, -0.5f, -0.5f), LEFT_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-0.5f, -0.5f, -0.5f), LEFT_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-0.5f, -0.5f,  0.5f), LEFT_COLOR,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-0.5f,  0.5f,  0.5f), LEFT_COLOR,  glm::vec2(1.0f, 0.0f),
+                                         
+                                         // RIGHT
+        glm::vec3(0.5f,  0.5f,  0.5f),  RIGHT_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(0.5f,  0.5f, -0.5f),  RIGHT_COLOR,  glm::vec2(1.0f, 1.0f),
+        glm::vec3(0.5f, -0.5f, -0.5f),  RIGHT_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(0.5f, -0.5f, -0.5f),  RIGHT_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(0.5f, -0.5f,  0.5f),  RIGHT_COLOR,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(0.5f,  0.5f,  0.5f),  RIGHT_COLOR,  glm::vec2(1.0f, 0.0f),
+                                        
+                                         // BOTTOM
+        glm::vec3(-0.5f, -0.5f, -0.5f), BOTTOM_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3( 0.5f, -0.5f, -0.5f), BOTTOM_COLOR,  glm::vec2(1.0f, 1.0f),
+        glm::vec3( 0.5f, -0.5f,  0.5f), BOTTOM_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3( 0.5f, -0.5f,  0.5f), BOTTOM_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-0.5f, -0.5f,  0.5f), BOTTOM_COLOR,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-0.5f, -0.5f, -0.5f), BOTTOM_COLOR,  glm::vec2(0.0f, 1.0f),
+                                                 
+                                        // TOP
+        glm::vec3(-0.5f,  0.5f, -0.5f), TOP_COLOR,  glm::vec2(0.0f, 1.0f),
+        glm::vec3( 0.5f,  0.5f, -0.5f), TOP_COLOR,  glm::vec2(1.0f, 1.0f),
+        glm::vec3( 0.5f,  0.5f,  0.5f), TOP_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3( 0.5f,  0.5f,  0.5f), TOP_COLOR,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-0.5f,  0.5f,  0.5f), TOP_COLOR,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-0.5f,  0.5f, -0.5f), TOP_COLOR,  glm::vec2(0.0f, 1.0f)
     };
  
     glBindVertexArray(VAO); // set arrays' obj

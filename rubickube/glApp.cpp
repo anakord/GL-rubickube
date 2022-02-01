@@ -79,8 +79,14 @@ void glApp::loadController() {
 
 void glApp::loadFigures()
 {
-    if(sh_program)
-        figures.push_back(new Cube(sh_program->getHandle()));
+    if (sh_program)
+        figures.push_back(new Cube(glFigure::Color::RED, 
+                                   glFigure::Color::GREEN, 
+                                   glFigure::Color::BLUE,
+                                   glFigure::Color::YELLOW,
+                                   glFigure::Color::PURPLE,
+                                   glFigure::Color::WHITE)
+                         );
 }
 
 

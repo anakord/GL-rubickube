@@ -29,7 +29,6 @@ void glCamera::changeDegree(double x_k, double y_k) {
         Pitch = 0.0;
 }
 
-
 void glCamera::setPosition(GLuint sh_handler)
 {
     view = glm::scale(glm::lookAt(Pos, Pos + Front, Up), glm::vec3(Scale));
