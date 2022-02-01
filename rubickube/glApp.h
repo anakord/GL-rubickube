@@ -13,6 +13,7 @@
 #include "glFigure.h"
 #include "glCamera.h"
 #include "glShader.h"
+#include "glController.h"
 
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGTH 480
@@ -30,8 +31,8 @@ namespace OpenGL {
 		int width, height; // размеры окна
 		GLFWwindow* window;	
 		glShaderProgram* sh_program; // шейдерная программа
-		glCamera* camera; // камера
-		
+		glCamera* camera; // камера 
+		glController* controller;
 
 		std::vector<glFigure*> figures; // фигуры на экране
 
@@ -39,9 +40,8 @@ namespace OpenGL {
 		bool linkGLEW(); // инициализировать GLEW
 		void loadShaders(); // загрузить шейдер
 		void loadCamera(); // установить камеру
+		void loadController(); // установить управление
 		void loadFigures(); // загрузить фигуры
 
-		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-		static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 	};
 }

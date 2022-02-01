@@ -12,6 +12,7 @@ glApp::glApp(int width, int height)
         linkGLEW();
         loadShaders();
         loadCamera();
+        loadController();
         loadFigures();
     }
     else 
@@ -39,8 +40,6 @@ bool glApp::initWindow()
     glfwGetFramebufferSize(window, &width, &height);
 
     glfwMakeContextCurrent(window);
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetCursorPosCallback(window, cursor_position_callback);
 
     return true;
 }
@@ -74,6 +73,10 @@ void glApp::loadCamera()
     camera = new glCamera(width, height);
 }
 
+void glApp::loadController() {
+    controller = new glMouseController(window, camera);
+}
+
 void glApp::loadFigures()
 {
     if(sh_program)
@@ -87,7 +90,7 @@ void glApp::run()
         glfwPollEvents(); // запрос на ввод
         
         sh_program->Use(); // наложить шейдеры
-        camera->SetPosition(sh_program->getHandle());
+        camera->setPosition(sh_program->getHandle());
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -97,18 +100,6 @@ void glApp::run()
         glfwSwapBuffers(window); 
     }
 }
-
-// callbacks
-void glApp::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{   
-
-}
-
-void glApp::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
-
-}
-
 
 glApp::~glApp()
 {

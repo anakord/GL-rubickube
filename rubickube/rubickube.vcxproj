@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="glApp.cpp" />
     <ClCompile Include="glCamera.cpp" />
+    <ClCompile Include="glController.cpp" />
     <ClCompile Include="glTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="glFigure.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="glApp.h" />
     <ClInclude Include="glCamera.h" />
+    <ClInclude Include="glController.h" />
     <ClInclude Include="glFigure.h" />
     <ClInclude Include="glShader.h" />
     <ClInclude Include="glTexture.h" />
