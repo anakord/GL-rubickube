@@ -29,7 +29,6 @@ glFigure::~glFigure() {
 // glFigure REALIZATION
 
 // CUBE
-
 Cube::Cube(glm::mat4 position,
            glm::vec3 back_color, glm::vec3 front_color,
            glm::vec3 left_color, glm::vec3 right_color,
@@ -103,15 +102,49 @@ Cube::Cube(glm::mat4 position,
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
 }
 
-void Cube::draw(glShaderProgram* sh_program) {
+void Cube::draw() {
     glBindVertexArray(VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture->getTexture());
-    sh_program->loadModel(model); // подгрузка модели конкретной фигуры в шейдер (мб в Figures?)
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
 }
 
 Cube::~Cube() {
+    
+}
+
+
+glFigures::glFigures(uchar n) {
+    n_row = n;
+}
+
+glFigures::~glFigures() {
+    for(auto it = figures.begin(); it != figures.end(); ++it)
+        delete *it;
+    figures.clear();
+}
+
+glCubes::glCubes(uchar n)
+    :glFigures(n) {
+    for(uchar z = 0; z < n_row; z++) {
+        for(uchar y = 0; y < n_row; y++)
+            for(uchar x = 0; x < n_row; x++) {
+                figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
+                    glFigure::Color::RED, glFigure::Color::RED, 
+                    glFigure::Color::RED, glFigure::Color::RED, 
+                    glFigure::Color::RED, glFigure::Color::RED));
+            }
+    }
+}
+
+void glCubes::draw(glShaderProgram* sh_program) {
+    for(auto it = figures.begin(); it != figures.end(); ++it) {
+        sh_program->loadModel((*it)->getModel());
+        (*it)->draw();
+    }
+}
+
+glCubes::~glCubes() {
 
 }

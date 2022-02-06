@@ -34,7 +34,7 @@ namespace OpenGL {
 		glFigure(glm::mat4 position);
 		
 		glm::mat4 getModel() { return model; };
-		virtual void draw(glShaderProgram* sh_program) = 0;
+		virtual void draw() = 0;
 		~glFigure();
 	protected:
 		glm::mat4 model = glm::mat4(1.0f);
@@ -42,7 +42,22 @@ namespace OpenGL {
 		glTexture* texture;
 	};
 	
-	// glFigure REALIZATIONS
+
+	class glFigures {
+	public:
+		glFigures(uchar n); // размерность фигуры
+		void iterate(uchar& x, uchar& y, uchar& z);
+		virtual void draw(glShaderProgram* sh_program) =0; 
+		~glFigures();
+	protected:
+		uchar n_row =0; // количество фигур в ряде
+		std::vector<glFigure*> figures; // фигуры на экране
+		// хранятся порядно 
+	};
+
+
+
+	// glFigure(s) REALIZATIONS
 	class Cube :
 		public glFigure
 	{
@@ -56,8 +71,20 @@ namespace OpenGL {
 			glm::vec3 left_color, glm::vec3 right_color,
 			glm::vec3 bottom_color, glm::vec3 top_color);
 
-		void draw(glShaderProgram* sh_program) override;
+		void draw() override;
 		~Cube();
+	private:
+		
+	};
+	
+
+	class glCubes :
+		public glFigures
+	{
+	public:
+		glCubes(uchar n);
+		void draw(glShaderProgram* sh_program) override;
+		~glCubes();
 	private:
 		
 	};

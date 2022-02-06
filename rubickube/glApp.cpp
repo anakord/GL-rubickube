@@ -70,7 +70,7 @@ void glApp::loadCamera()
     glMatrixMode(GL_PROJECTION);
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, width, height);
-    camera = new glCamera(width, height);
+    camera = new glCamera(width, height, DEFAULT_SIZE);
 }
 
 void glApp::loadController() {
@@ -79,31 +79,8 @@ void glApp::loadController() {
 
 void glApp::loadFigures()
 {
-    if (sh_program) {
-        figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 0.0f, 0.0f)),
-            glFigure::Color::RED,
-            glFigure::Color::GREEN,
-            glFigure::Color::BLUE,
-            glFigure::Color::YELLOW,
-            glFigure::Color::PURPLE,
-            glFigure::Color::WHITE)
-        );
-        figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
-            glFigure::Color::RED,
-            glFigure::Color::GREEN,
-            glFigure::Color::BLUE,
-            glFigure::Color::YELLOW,
-            glFigure::Color::PURPLE,
-            glFigure::Color::WHITE)
-        );
-        figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)),
-            glFigure::Color::RED,
-            glFigure::Color::GREEN,
-            glFigure::Color::BLUE,
-            glFigure::Color::YELLOW,
-            glFigure::Color::PURPLE,
-            glFigure::Color::WHITE)
-        );
+    if(sh_program) {
+        cubes = new glCubes(DEFAULT_SIZE);
     }
 }
 
@@ -119,10 +96,8 @@ void glApp::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         
-        figures[0]->draw(sh_program); // отрисовка фигуры
-        figures[1]->draw(sh_program); // отрисовка фигуры
-        figures[2]->draw(sh_program); // отрисовка фигуры
-
+        cubes->draw(sh_program);
+        
         glfwSwapBuffers(window); 
     }
 }

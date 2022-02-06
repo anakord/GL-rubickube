@@ -17,6 +17,7 @@
 
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGTH 480
+#define DEFAULT_SIZE 7
 
 // Windowed opengl Application Class
 namespace OpenGL {
@@ -34,7 +35,7 @@ namespace OpenGL {
 		glCamera* camera; // камера 
 		glController* controller;
 
-		std::vector<glFigure*> figures; // фигуры на экране
+		glFigures* cubes;
 
 		bool initWindow(); // создать окно
 		bool linkGLEW(); // инициализировать GLEW
