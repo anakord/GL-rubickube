@@ -86,7 +86,14 @@ namespace OpenGL {
 		void draw(glShaderProgram* sh_program) override;
 		~glCubes();
 	private:
-		
+		struct Color { // стандартная закраска
+			static const glm::vec3* BACK;
+			static const glm::vec3* FRONT;
+			static const glm::vec3* LEFT;
+			static const glm::vec3* RIGHT;
+			static const glm::vec3* BOTTOM;
+			static const glm::vec3* TOP;
+		};
 	};
 }
 

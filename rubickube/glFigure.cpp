@@ -125,15 +125,22 @@ glFigures::~glFigures() {
     figures.clear();
 }
 
+const glm::vec3* glCubes::Color::BACK =   &glFigure::Color::RED;
+const glm::vec3* glCubes::Color::FRONT =  &glFigure::Color::BLUE;
+const glm::vec3* glCubes::Color::LEFT =   &glFigure::Color::PURPLE;
+const glm::vec3* glCubes::Color::RIGHT =  &glFigure::Color::WHITE;
+const glm::vec3* glCubes::Color::BOTTOM = &glFigure::Color::GREEN;
+const glm::vec3* glCubes::Color::TOP =    &glFigure::Color::YELLOW;
+
 glCubes::glCubes(uchar n)
     :glFigures(n) {
     for(uchar z = 0; z < n_row; z++) {
         for(uchar y = 0; y < n_row; y++)
             for(uchar x = 0; x < n_row; x++) {
                 figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
-                    glFigure::Color::RED, glFigure::Color::RED, 
-                    glFigure::Color::RED, glFigure::Color::RED, 
-                    glFigure::Color::RED, glFigure::Color::RED));
+                    *glCubes::Color::BACK, *glCubes::Color::FRONT,
+                    *glCubes::Color::LEFT, *glCubes::Color::RIGHT,
+                    *glCubes::Color::BOTTOM, *glCubes::Color::TOP));
             }
     }
 }
