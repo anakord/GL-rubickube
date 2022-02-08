@@ -137,10 +137,29 @@ glCubes::glCubes(uchar n)
     for(uchar z = 0; z < n_row; z++) {
         for(uchar y = 0; y < n_row; y++)
             for(uchar x = 0; x < n_row; x++) {
+                
+                glm::vec3 back =   glFigure::Color::NONE;
+                glm::vec3 front =  glFigure::Color::NONE;
+                glm::vec3 left =   glFigure::Color::NONE;
+                glm::vec3 right =  glFigure::Color::NONE;
+                glm::vec3 bottom = glFigure::Color::NONE;
+                glm::vec3 top =    glFigure::Color::NONE;
+                
+                if (z == 0) back = *glCubes::Color::BACK;
+                if (z == n_row - 1) front = *glCubes::Color::FRONT;
+                
+                if(x == 0) left = *glCubes::Color::LEFT;
+                if (x == n_row-1) right = *glCubes::Color::RIGHT;
+         
+                if (y == 0) bottom = *glCubes::Color::BOTTOM;
+                if (y == n_row - 1) top = *glCubes::Color::TOP;
+                
+                
+
                 figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
-                    *glCubes::Color::BACK, *glCubes::Color::FRONT,
-                    *glCubes::Color::LEFT, *glCubes::Color::RIGHT,
-                    *glCubes::Color::BOTTOM, *glCubes::Color::TOP));
+                    back, front,
+                    left, right,
+                    bottom, top));
             }
     }
 }
