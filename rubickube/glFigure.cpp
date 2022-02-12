@@ -145,21 +145,23 @@ glCubes::glCubes(uchar n)
                 glm::vec3 bottom = glFigure::Color::NONE;
                 glm::vec3 top =    glFigure::Color::NONE;
                 
-                if (z == 0) back = *glCubes::Color::BACK;
-                if (z == n_row - 1) front = *glCubes::Color::FRONT;
-                
                 if(x == 0) left = *glCubes::Color::LEFT;
                 if (x == n_row-1) right = *glCubes::Color::RIGHT;
          
                 if (y == 0) bottom = *glCubes::Color::BOTTOM;
                 if (y == n_row - 1) top = *glCubes::Color::TOP;
                 
-                
+                if (z == 0) back = *glCubes::Color::BACK;
+                if (z == n_row - 1) front = *glCubes::Color::FRONT;
 
-                figures.push_back(new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
+                Cube* configured = new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
                     back, front,
                     left, right,
-                    bottom, top));
+                    bottom, top);
+                
+                configured->setPos(x, y, z);
+
+                figures.push_back(configured);
             }
     }
 }

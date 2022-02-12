@@ -72,9 +72,18 @@ namespace OpenGL {
 			glm::vec3 bottom_color, glm::vec3 top_color);
 
 		void draw() override;
+		uchar getX() { return x; }
+		uchar getY() { return y; }
+		uchar getZ() { return z; }
+
+		void setPos(uchar x, uchar y, uchar z) { 
+			this->x = x;
+			this->y = y;
+			this->z = z;
+		}
 		~Cube();
 	private:
-		
+		uchar x =0, y =0, z =0;
 	};
 	
 

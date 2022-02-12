@@ -48,21 +48,23 @@ void glMouseController::key_callback(GLFWwindow* window, int key, int scancode, 
 void glMouseController::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     glCamera* context = static_cast<glCamera*>(glfwGetWindowUserPointer(window));
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        context->is_camera_move = true;
-        glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseY);
-    }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         context->is_camera_move = false;
+        return;
+    }
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        context->castRay(glMouseController::mouseX, glMouseController::mouseX);
+        context->is_camera_move = true;
+        glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseX);
     }
 }
 
 void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
 {
     glCamera* context = static_cast<glCamera*>(glfwGetWindowUserPointer(window));
-    if (context->is_camera_move) {
-        double curX = glMouseController::mouseX, curY = glMouseController::mouseY;
-        glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseY);
+    double curX = glMouseController::mouseX, curY = glMouseController::mouseY;
+    glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseY);
+    if (context->is_camera_move) {   
         context->changeDegree(glMouseController::mouseX - curX, glMouseController::mouseY - curY);
     }
 }

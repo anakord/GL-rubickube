@@ -7,7 +7,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
 #define SCALE_MIN 0.8
 #define SCALE_MAX 1.2
 
@@ -23,7 +22,7 @@ namespace OpenGL {
 		void changeScale(double k);
 		void changeDegree(double x_k, double y_k);
 		void setPosition(); // загрузка позиции камеры в шейдер
-
+		void castRay(double x, double y);
 		bool is_camera_move =false;
 
 		~glCamera();
@@ -36,12 +35,14 @@ namespace OpenGL {
 		glm::vec3 Front =glm::vec3(0.0f, 0.0f, -1.0f); // горизонтальный коэффициент
 		glm::vec3 Up =glm::vec3(0.0f, 1.0f, 0.0f); // вертикальный коэффициент
 
-		GLfloat center_k = 0.0f; // пересчитывается при создании камеры
+		double screen_width =0.0, screen_height =0.0;
 
+		GLfloat center_k = 0.0f; // пересчитывается при создании камеры
+		
 		double Scale =1.0;
 		double ScaleSpeed = 0.08;
 		
 		double Pitch =0.0, Yaw =0.0;
-		double Speed = 0.05;
+		double Speed = 0.005;
 	};
 }
