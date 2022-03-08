@@ -1,6 +1,7 @@
 #include "glCamera.h"
 #include "glController.h"
 #include <iostream>
+
 using namespace OpenGL;
 
 glCamera::glCamera(int width, int heigth, unsigned char figure_size) { // перспективное отображение
@@ -40,28 +41,42 @@ void glCamera::setPosition()
     view = glm::translate(view, glm::vec3(-center_k)); // centralization
 }
 
-void OpenGL::glCamera::castRay(double mouse_x, double mouse_y)
+glm::vec3 OpenGL::glCamera::castRay(double mouse_x, double mouse_y)
 {
-    std::cout << "RAY POINTS" << std::endl;
-    // Необходимо получить нормализованное направление
-    mouse_x *= 2.0; // Расширить диапазон в + и -
-    mouse_y *= 2.0;
-    mouse_x /= screen_width; // Нормализовать к диапазону [-1, 1]
-    mouse_y /= screen_height;
-    glm::vec3 ray_direction = glm::vec3(mouse_x - 1.0f, 
-                                        1.0f - mouse_y, 
-                                        1.0f);
-    glm::vec4 ray_clip = glm::vec4(ray_direction.x, ray_direction.y, -1.0, 1.0); // обрезанные в камере координаты
-    glm::vec4 ray_eye = glm::inverse(projection) * ray_clip;
-    ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
-    glm::vec3 ray_world = glm::vec3(glm::inverse(view) * ray_eye);
-    ray_world = glm::normalize(ray_world);
-    //for (float z = -1.0f; z < 1.0f; z += 0.05f) {
-        //ray_world.z = z;
-        std::cout << "x=" << ray_world.x << " y=" << ray_world.y << " z=" << ray_world.z << std::endl;
-    //}
+    using namespace glm;
+    vec3 ray_ndc = getNormalisedDeviceCoordinates(mouse_x, mouse_y);
+    vec4 ray_clip = vec4(ray_ndc.x, ray_ndc.y, -1.0, 1.0);
+    vec4 ray_eye = toEyeCoords(ray_clip);
+    vec3 ray_world = toWorldCoords(ray_eye);
+    return ray_world;
 }
 
 glCamera::~glCamera() {
 	
+}
+
+glm::vec3 OpenGL::glCamera::getNormalisedDeviceCoordinates(float mouse_x, float mouse_y)
+{
+    using namespace glm;
+    float ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
+    float ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
+    float ndc_z = 1.0;
+    return vec3(ndc_x, ndc_y, ndc_z);
+}
+
+glm::vec4 OpenGL::glCamera::toEyeCoords(glm::vec4 ray_clip)
+{
+    using namespace glm;
+    vec4 ray_eye = inverse(projection) * ray_clip;
+    // Now, we only needed to un-project the x,y part, so let's manually set the z,w part to mean "forwards, and not a point"
+    ray_eye = vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+    return ray_eye;
+}
+
+glm::vec3 OpenGL::glCamera::toWorldCoords(glm::vec4 ray_eye)
+{
+    using namespace glm;
+    vec3 ray_world = inverse(projection) * ray_eye;
+    ray_world = normalize(ray_world);
+    return ray_world;
 }

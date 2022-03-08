@@ -11,9 +11,10 @@ glApp::glApp(int width, int height)
         std::cout << "Application sucessfully run." << std::endl;
         linkGLEW();
         loadShaders();
+        loadFigures();
         loadCamera();
         loadController();
-        loadFigures();
+        
     }
     else 
         std::cout << "Application doesn't run." << std::endl;
@@ -96,6 +97,7 @@ void glApp::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         
+        cubes->is_hit(camera->getPos(), camera->castRay(width, height));
         cubes->draw(sh_program);
         
         glfwSwapBuffers(window); 
@@ -108,7 +110,8 @@ glApp::~glApp()
         delete sh_program;
     if (camera) // удаление камеры
         delete camera;
-
+    if (controller)
+        delete controller;
     glfwDestroyWindow(window);
     glfwTerminate();
     std::cout << "Application was closed." << std::endl;

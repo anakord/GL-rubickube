@@ -10,8 +10,8 @@ glController::glController(void* context, glCamera* camera)
 
 // glController REALIZATION
 
-double glMouseController::mouseX = 0.0;
-double glMouseController::mouseY = 0.0;
+bool glController::is_camera_move = false;
+double glController::inputX = 0.0, glController::inputY = 0.0;
 
 glMouseController::glMouseController(GLFWwindow* window, glCamera* camera)
     :glController(window, camera) {
@@ -31,6 +31,7 @@ void glMouseController::loadEvents()
 }
 
 // callbacks
+/*
 void glMouseController::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     glCamera* context = static_cast<glCamera*>(glfwGetWindowUserPointer(window));
@@ -44,28 +45,28 @@ void glMouseController::key_callback(GLFWwindow* window, int key, int scancode, 
     if (key == GLFW_KEY_D)
         context->changeDegree(-5, 0);
 }
+*/
 
 void glMouseController::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     glCamera* context = static_cast<glCamera*>(glfwGetWindowUserPointer(window));
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        context->is_camera_move = false;
+        glController::is_camera_move = false;
         return;
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        context->castRay(glMouseController::mouseX, glMouseController::mouseX);
-        context->is_camera_move = true;
-        glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseX);
+        glController::is_camera_move = true;
+        glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
     }
 }
 
 void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
 {
     glCamera* context = static_cast<glCamera*>(glfwGetWindowUserPointer(window));
-    double curX = glMouseController::mouseX, curY = glMouseController::mouseY;
-    glfwGetCursorPos(window, &glMouseController::mouseX, &glMouseController::mouseY);
-    if (context->is_camera_move) {   
-        context->changeDegree(glMouseController::mouseX - curX, glMouseController::mouseY - curY);
+    double curX = inputX, curY = inputY;
+    glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
+    if (glController::is_camera_move) {
+        context->changeDegree(glController::inputX - curX, glController::inputY - curY);
     }
 }
 

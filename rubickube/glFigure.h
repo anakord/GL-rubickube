@@ -8,12 +8,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 #include "glTexture.h"
 #include "glShader.h"
+#include "glController.h"
+
 #include "typedef.h"
 
 namespace OpenGL {
 	
+	class glShaderProgram;
+
 	struct vertex {
 		glm::vec3 coord;
 		glm::vec3 color;
@@ -31,14 +36,17 @@ namespace OpenGL {
 			static const glm::vec3 WHITE;
 			static const glm::vec3 NONE;
 		};
-		glFigure(glm::mat4 position);
-		
+		glFigure(glm::vec3 center);
 		glm::mat4 getModel() { return model; };
 		virtual void draw() = 0;
+		bool is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
 		~glFigure();
 	protected:
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::vec3 center =glm::vec3(0.0f);
+		glm::mat4 model =glm::mat4(1.0f);
 		GLuint VAO =0, VBO =0, EBO =0;
+		bool is_choosen =false;
+		static const float SIZE;
 		glTexture* texture;
 	};
 	
@@ -46,13 +54,12 @@ namespace OpenGL {
 	class glFigures {
 	public:
 		glFigures(uchar n); // размерность фигуры
-		void iterate(uchar& x, uchar& y, uchar& z);
+		bool is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
 		virtual void draw(glShaderProgram* sh_program) =0; 
 		~glFigures();
 	protected:
 		uchar n_row =0; // количество фигур в ряде
 		std::vector<glFigure*> figures; // фигуры на экране
-		// хранятся порядно 
 	};
 
 
@@ -64,23 +71,18 @@ namespace OpenGL {
 	public:
 		/*
 		    1 - position, 
-			2 - 6 - colors of cube sides
+			2 - 7 - colors of cube sides
 		*/
-		Cube(glm::mat4 position, 
+		Cube(glm::vec3 center,
 			glm::vec3 back_color, glm::vec3 front_color,
 			glm::vec3 left_color, glm::vec3 right_color,
 			glm::vec3 bottom_color, glm::vec3 top_color);
-
+		
 		void draw() override;
 		uchar getX() { return x; }
 		uchar getY() { return y; }
 		uchar getZ() { return z; }
 
-		void setPos(uchar x, uchar y, uchar z) { 
-			this->x = x;
-			this->y = y;
-			this->z = z;
-		}
 		~Cube();
 	private:
 		uchar x =0, y =0, z =0;

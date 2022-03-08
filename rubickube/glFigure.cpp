@@ -1,8 +1,9 @@
 #include "glFigure.h"
+#include <iostream>
 
 using namespace OpenGL;
 
-
+const float glFigure::SIZE = 0.5f;
 const glm::vec3 glFigure::Color::RED    = glm::vec3(1.0f, 0.0f, 0.0f);
 const glm::vec3 glFigure::Color::GREEN  = glm::vec3(0.0f, 1.0f, 0.0f);
 const glm::vec3 glFigure::Color::BLUE   = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -11,13 +12,21 @@ const glm::vec3 glFigure::Color::PURPLE = glm::vec3(1.0f, 0.0f, 1.0f);
 const glm::vec3 glFigure::Color::WHITE  = glm::vec3(1.0f, 1.0f, 1.0f);
 const glm::vec3 glFigure::Color::NONE   = glm::vec3(0.0f, 0.0f, 0.0f);
 
-glFigure::glFigure(glm::mat4 position) {
-    model = position;
+glFigure::glFigure(glm::vec3 center) {
+    this->center = center;
+    std::cout << "X = " << center.x << " Y = " << center.y << " Z =" << center.z << std::endl;
+    model = glm::translate(glm::mat4(1.0f), center);
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-
     texture = new glTexture("side.png");
+}
+
+bool glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
+{
+    using namespace glm;
+    return false;
+
 }
 
 glFigure::~glFigure() {
@@ -29,60 +38,60 @@ glFigure::~glFigure() {
 // glFigure REALIZATION
 
 // CUBE
-Cube::Cube(glm::mat4 position,
+Cube::Cube(glm::vec3 center,
            glm::vec3 back_color, glm::vec3 front_color,
            glm::vec3 left_color, glm::vec3 right_color,
-           glm::vec3 bottom_color, glm::vec3 top_color) 
-              :glFigure(position) {
+           glm::vec3 bottom_color, glm::vec3 top_color)
+              :glFigure(center) {
 
     vertex vertices[] = {
                                          // BACK
-       glm::vec3(-0.5f, -0.5f, -0.5f),  back_color,  glm::vec2(0.0f, 0.0f),
-       glm::vec3( 0.5f, -0.5f, -0.5f),  back_color,  glm::vec2(1.0f, 0.0f),
-       glm::vec3( 0.5f,  0.5f, -0.5f),  back_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3( 0.5f,  0.5f, -0.5f),  back_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3(-0.5f,  0.5f, -0.5f),  back_color,  glm::vec2(0.0f, 1.0f),
-       glm::vec3(-0.5f, -0.5f, -0.5f),  back_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3( SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 0.0f),
+       glm::vec3( SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 1.0f),
+       glm::vec3( SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 1.0f),
+       glm::vec3(-SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 1.0f),
+       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 0.0f),
                                         
                                          // FRONT
-       glm::vec3(-0.5f, -0.5f,  0.5f),  front_color,  glm::vec2(0.0f, 0.0f),
-       glm::vec3( 0.5f, -0.5f,  0.5f),  front_color,  glm::vec2(1.0f, 0.0f),
-       glm::vec3( 0.5f,  0.5f,  0.5f),  front_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3( 0.5f,  0.5f,  0.5f),  front_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3(-0.5f,  0.5f,  0.5f),  front_color,  glm::vec2(0.0f, 1.0f),
-       glm::vec3(-0.5f, -0.5f,  0.5f),  front_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3( SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 0.0f),
+       glm::vec3( SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 1.0f),
+       glm::vec3( SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 1.0f),
+       glm::vec3(-SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 1.0f),
+       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 0.0f),
                                         
                                          // LEFT
-        glm::vec3(-0.5f,  0.5f,  0.5f), left_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(-0.5f,  0.5f, -0.5f), left_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3(-0.5f, -0.5f, -0.5f), left_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(-0.5f, -0.5f, -0.5f), left_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(-0.5f, -0.5f,  0.5f), left_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-0.5f,  0.5f,  0.5f), left_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE, -SIZE), left_color,  glm::vec2(1.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE,  SIZE), left_color,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, 0.0f),
                                          
                                          // RIGHT
-        glm::vec3(0.5f,  0.5f,  0.5f),  right_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(0.5f,  0.5f, -0.5f),  right_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3(0.5f, -0.5f, -0.5f),  right_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(0.5f, -0.5f, -0.5f),  right_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(0.5f, -0.5f,  0.5f),  right_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(0.5f,  0.5f,  0.5f),  right_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(SIZE,  SIZE, -SIZE),  right_color,  glm::vec2(1.0f, 1.0f),
+        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(SIZE, -SIZE,  SIZE),  right_color,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, 0.0f),
                                         
                                          // BOTTOM
-        glm::vec3(-0.5f, -0.5f, -0.5f), bottom_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3( 0.5f, -0.5f, -0.5f), bottom_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3( 0.5f, -0.5f,  0.5f), bottom_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3( 0.5f, -0.5f,  0.5f), bottom_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(-0.5f, -0.5f,  0.5f), bottom_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-0.5f, -0.5f, -0.5f), bottom_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3( SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(1.0f, 1.0f),
+        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(0.0f, 1.0f),
                                                  
                                         // TOP
-        glm::vec3(-0.5f,  0.5f, -0.5f), top_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3( 0.5f,  0.5f, -0.5f), top_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3( 0.5f,  0.5f,  0.5f), top_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3( 0.5f,  0.5f,  0.5f), top_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(-0.5f,  0.5f,  0.5f), top_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-0.5f,  0.5f, -0.5f), top_color,  glm::vec2(0.0f, 1.0f)
+        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3( SIZE,  SIZE, -SIZE), top_color,  glm::vec2(1.0f, 1.0f),
+        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), top_color,  glm::vec2(0.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(0.0f, 1.0f)
     };
  
     glBindVertexArray(VAO); // set arrays' obj
@@ -154,13 +163,11 @@ glCubes::glCubes(uchar n)
                 if (z == 0) back = *glCubes::Color::BACK;
                 if (z == n_row - 1) front = *glCubes::Color::FRONT;
 
-                Cube* configured = new Cube(glm::translate(glm::mat4(1.0f), glm::vec3(x, y, z)),
+                Cube* configured = new Cube(glm::vec3(x, y, z),
                     back, front,
                     left, right,
                     bottom, top);
-                
-                configured->setPos(x, y, z);
-
+                      
                 figures.push_back(configured);
             }
     }
@@ -171,6 +178,16 @@ void glCubes::draw(glShaderProgram* sh_program) {
         sh_program->loadModel((*it)->getModel());
         (*it)->draw();
     }
+}
+
+bool glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor) {
+    for (auto it = figures.begin(); it != figures.end(); ++it) {
+        if((*it)->is_hit(ray_origin_wor, ray_direction_wor)) {
+            std::cout << "LUCKY STRIKE!" << std::endl;
+            return true;
+        }
+    }
+    return false;
 }
 
 glCubes::~glCubes() {
