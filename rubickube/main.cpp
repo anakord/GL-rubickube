@@ -1,7 +1,6 @@
 #define GLFW_INCLUDE_NONE	
 
 #include "glApp.h"
-#include "glFigure.h"
 
 // APPLICATION RUNNER
 int main()

@@ -27,10 +27,10 @@ void glCamera::changeDegree(double x_k, double y_k) {
     Yaw += Speed * x_k;
     Pitch += Speed * y_k;
 
-    if(Yaw > 360.0)
-        Yaw = 0.0;
-    if(Pitch > 360.0)
-        Pitch = 0.0;
+    if (Pitch > 360.0f)
+        Pitch = 0.0f;
+    if (Yaw > 360.0f)
+        Yaw = 0.0f;
 }
 
 void glCamera::setPosition()
@@ -55,12 +55,12 @@ glCamera::~glCamera() {
 	
 }
 
-glm::vec3 OpenGL::glCamera::getNormalisedDeviceCoordinates(float mouse_x, float mouse_y)
+glm::vec3 OpenGL::glCamera::getNormalisedDeviceCoordinates(double mouse_x, double mouse_y)
 {
     using namespace glm;
-    float ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
-    float ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
-    float ndc_z = 1.0;
+    double ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
+    double ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
+    double ndc_z = 1.0;
     return vec3(ndc_x, ndc_y, ndc_z);
 }
 

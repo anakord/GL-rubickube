@@ -11,8 +11,8 @@ glApp::glApp(int width, int height)
         std::cout << "Application sucessfully run." << std::endl;
         linkGLEW();
         loadShaders();
-        loadFigures();
         loadCamera();
+        loadFigures();
         loadController();
         
     }
@@ -75,7 +75,7 @@ void glApp::loadCamera()
 }
 
 void glApp::loadController() {
-    controller = new glMouseController(window, camera);
+    controller = new glMouseController(window, camera, cubes);
 }
 
 void glApp::loadFigures()
@@ -97,7 +97,7 @@ void glApp::run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         
-        cubes->is_hit(camera->getPos(), camera->castRay(width, height));
+        //cubes->is_hit(camera->getPos(), camera->castRay(width, height));
         cubes->draw(sh_program);
         
         glfwSwapBuffers(window); 

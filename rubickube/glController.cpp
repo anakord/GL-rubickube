@@ -2,23 +2,23 @@
 
 using namespace OpenGL;
 
-glController::glController(void* context, glCamera* camera)
+glController::glController(void* context, glCamera* camera, glFigures* figures)
 {
-
+    this->camera = camera;
+    glController::figures = figures;
 }
 
 
 // glController REALIZATION
-
 bool glController::is_camera_move = false;
 double glController::inputX = 0.0, glController::inputY = 0.0;
+glFigures* glController::figures = nullptr;
 
-glMouseController::glMouseController(GLFWwindow* window, glCamera* camera)
-    :glController(window, camera) {
-    this->camera = camera;
+glMouseController::glMouseController(GLFWwindow* window, glCamera* camera, glFigures* figures)
+    :glController(window, camera, figures) {
     this->window = window;
     glfwMakeContextCurrent(this->window);
-    glfwSetWindowUserPointer(window, camera); // push contoller data to callback functions
+    glfwSetWindowUserPointer(window, camera); // push contoller data to callback 
     loadEvents();
 }
 
@@ -55,6 +55,9 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
         return;
     }
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double mouseX = 0.0, mouseY = 0.0;
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+        figures->is_hit(context->getPos(), context->castRay(mouseX, mouseY));
         glController::is_camera_move = true;
         glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
     }

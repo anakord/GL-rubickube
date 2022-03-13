@@ -25,8 +25,31 @@ glFigure::glFigure(glm::vec3 center) {
 bool glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
 {
     using namespace glm;
-    return false;
-
+    // work out components of quadratic
+    float intersection_distance = 0.0f;
+    vec3 dist_to_sphere = ray_origin_wor - center;
+    float b = dot(ray_direction_wor, dist_to_sphere);
+    float c = dot(dist_to_sphere, dist_to_sphere) - 2.0 * 2.0;
+    float b_squared_minus_c = b * b - c;
+    // check for "imaginary" answer. == ray completely misses sphere
+    if (b_squared_minus_c < 0.0f) { return false; }
+    // check for ray hitting twice (in and out of the sphere)
+    if (b_squared_minus_c > 0.0f) {
+        // get the 2 intersection distances along ray
+        float t_a = -b + sqrt(b_squared_minus_c);
+        float t_b = -b - sqrt(b_squared_minus_c);
+        intersection_distance = t_b;
+        // if behind viewer, throw one or both away
+        if (t_a < 0.0) {
+            if (t_b < 0.0) { 
+                return false;
+            }
+        }
+        else if (t_b < 0.0) {
+            intersection_distance = t_a;
+        }
+        return true;
+    }
 }
 
 glFigure::~glFigure() {
@@ -181,6 +204,7 @@ void glCubes::draw(glShaderProgram* sh_program) {
 }
 
 bool glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor) {
+    std::cout << "SHOOT!" << std::endl;
     for (auto it = figures.begin(); it != figures.end(); ++it) {
         if((*it)->is_hit(ray_origin_wor, ray_direction_wor)) {
             std::cout << "LUCKY STRIKE!" << std::endl;

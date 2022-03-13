@@ -27,14 +27,14 @@ namespace OpenGL {
 
 		~glCamera();
 	private:
-		glm::vec3 getNormalisedDeviceCoordinates(float mouse_x, float mouse_y);
+		glm::vec3 getNormalisedDeviceCoordinates(double mouse_x, double mouse_y);
 		glm::vec3 toWorldCoords(glm::vec4 ray_eye);
 		glm::vec4 toEyeCoords(glm::vec4 ray_clip);
 		
 		glm::mat4 view =glm::mat4(1.0f);
 		glm::mat4 projection =glm::mat4(1.0f);
 
-		glm::vec3 Pos =glm::vec3(0.0f, 0.0f, 8.0f); 
+		glm::vec3 Pos =glm::vec3(0.0f, 0.0f, 3.0f); 
 		glm::vec3 Front =glm::vec3(0.0f, 0.0f, -1.0f); // горизонтальный коэффициент
 		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f); // вертикальный коэффициент
 		
