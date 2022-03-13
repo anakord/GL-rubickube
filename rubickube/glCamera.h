@@ -18,7 +18,10 @@ namespace OpenGL {
 		glm::mat4 getView() const { return view; };
 		glm::mat4 getProjection() const { return projection; };
 		
-		glm::vec3 getPos() { return Pos; };
+		glm::vec3 getPos() { 
+			glm::mat4 inv_view = glm::inverse(view);
+			std::cout << "x = " << inv_view[3][0] << " y = " << inv_view[3][1] << " z = " << inv_view[3][2] << std::endl;
+			return inv_view[3]; };
 
 		void changeScale(double k);
 		void changeDegree(double x_k, double y_k);
@@ -27,7 +30,7 @@ namespace OpenGL {
 
 		~glCamera();
 	private:
-		glm::vec3 getNormalisedDeviceCoordinates(double mouse_x, double mouse_y);
+		glm::vec3 getNormalisedDeviceCoordinates(double mouse_x, double mouse_y, int screen_width, int screen_height);
 		glm::vec3 toWorldCoords(glm::vec4 ray_eye);
 		glm::vec4 toEyeCoords(glm::vec4 ray_clip);
 		
@@ -40,7 +43,7 @@ namespace OpenGL {
 		
 		double screen_width =0.0, screen_height =0.0;
 
-		GLfloat center_k = 0.0f; // пересчитывается при создании камеры
+		GLfloat radius = 0.0f; // пересчитывается при создании камеры
 		
 		double Scale =1.0;
 		double ScaleSpeed = 0.08;

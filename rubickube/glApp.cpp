@@ -13,8 +13,7 @@ glApp::glApp(int width, int height)
         loadShaders();
         loadCamera();
         loadFigures();
-        loadController();
-        
+        loadController();    
     }
     else 
         std::cout << "Application doesn't run." << std::endl;

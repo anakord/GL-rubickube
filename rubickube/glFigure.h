@@ -36,7 +36,7 @@ namespace OpenGL {
 		};
 		glFigure(glm::vec3 center);
 		glm::mat4 getModel() { return model; };
-		virtual void draw() = 0;
+		virtual void draw() =0;
 		bool is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
 		~glFigure();
 	protected:

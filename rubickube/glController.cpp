@@ -57,8 +57,8 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         double mouseX = 0.0, mouseY = 0.0;
         glfwGetCursorPos(window, &mouseX, &mouseY);
-        figures->is_hit(context->getPos(), context->castRay(mouseX, mouseY));
         glController::is_camera_move = true;
+        figures->is_hit(context->getPos(), context->castRay(mouseX, mouseY));
         glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
     }
 }

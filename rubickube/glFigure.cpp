@@ -13,8 +13,7 @@ const glm::vec3 glFigure::Color::WHITE  = glm::vec3(1.0f, 1.0f, 1.0f);
 const glm::vec3 glFigure::Color::NONE   = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glFigure::glFigure(glm::vec3 center) {
-    this->center = center;
-    std::cout << "X = " << center.x << " Y = " << center.y << " Z =" << center.z << std::endl;
+    this->center = center + SIZE;
     model = glm::translate(glm::mat4(1.0f), center);
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -25,31 +24,12 @@ glFigure::glFigure(glm::vec3 center) {
 bool glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
 {
     using namespace glm;
-    // work out components of quadratic
-    float intersection_distance = 0.0f;
-    vec3 dist_to_sphere = ray_origin_wor - center;
-    float b = dot(ray_direction_wor, dist_to_sphere);
-    float c = dot(dist_to_sphere, dist_to_sphere) - 2.0 * 2.0;
-    float b_squared_minus_c = b * b - c;
-    // check for "imaginary" answer. == ray completely misses sphere
-    if (b_squared_minus_c < 0.0f) { return false; }
-    // check for ray hitting twice (in and out of the sphere)
-    if (b_squared_minus_c > 0.0f) {
-        // get the 2 intersection distances along ray
-        float t_a = -b + sqrt(b_squared_minus_c);
-        float t_b = -b - sqrt(b_squared_minus_c);
-        intersection_distance = t_b;
-        // if behind viewer, throw one or both away
-        if (t_a < 0.0) {
-            if (t_b < 0.0) { 
-                return false;
-            }
-        }
-        else if (t_b < 0.0) {
-            intersection_distance = t_a;
-        }
-        return true;
-    }
+    vec3 oc = ray_origin_wor - center;
+    auto a = dot(ray_direction_wor, ray_direction_wor);
+    auto b = 2.0 * dot(oc, ray_direction_wor);
+    auto c = dot(oc, oc) - 2 * 2;
+    auto discriminant = b * b - 4 * a * c;
+    return (discriminant > 0);
 }
 
 glFigure::~glFigure() {
