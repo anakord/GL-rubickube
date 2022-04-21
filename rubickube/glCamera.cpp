@@ -9,7 +9,7 @@ glCamera::glCamera(int width, int heigth, unsigned char figure_size) { // перспе
     Pos.z = float(figure_size) * 3.0f;// отдалить камеру
     screen_width = width;
     screen_height = heigth;
-    projection = glm::perspective(45.0f, (float)screen_width / (float)screen_height, 0.1f, 100.0f);
+    projection = glm::perspective(45.0f, (float)screen_width / (float)screen_height, 1.1f, 100.0f);
 }
 
 void glCamera::changeScale(double k) {
@@ -39,8 +39,7 @@ void glCamera::setPosition()
     using namespace glm;
     view = glm::scale(glm::lookAt(Pos, Pos + Front, Up), glm::vec3(Scale, Scale, Scale));
     view = glm::rotate(view, GLfloat(Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-    view = glm::rotate(view, GLfloat(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));
-    view = glm::translate(view, glm::vec3(-radius)); // centralization 
+    view = glm::rotate(view, GLfloat(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));  
 }
 
 glm::vec3 glCamera::castRay(double mouse_x, double mouse_y)
@@ -50,17 +49,16 @@ glm::vec3 glCamera::castRay(double mouse_x, double mouse_y)
     glm::vec4 ray_clip = glm::vec4(ray_ndc.x, ray_ndc.y, -1.0, 1.0);
     glm::vec4 ray_eye = toEyeCoords(ray_clip);
     glm::vec3 ray_world = toWorldCoords(ray_eye);
-    std::cout << "Dx=" << ray_world.x << " Dy=" << ray_world.y << " Dz=" << ray_world.z << std::endl;
     return ray_world;
 }
 OpenGL::glCamera::~glCamera()
 {
 }
-glm::vec3 glCamera::getNormalisedDeviceCoordinates(double mouse_x, double mouse_y, int screen_width, int screen_height)
+glm::vec3 glCamera::getNormalisedDeviceCoordinates(double mouse_x, double mouse_y, double screen_width, double screen_height)
 {
-    float ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
-    float ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
-    float ndc_z = 1.0;
+    double ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
+    double ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
+    double ndc_z = 1.0;
     return glm::vec3(ndc_x, ndc_y, ndc_z);
 }
 

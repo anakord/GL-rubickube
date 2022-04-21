@@ -1,4 +1,6 @@
 #include "glFigure.h"
+#include <limits.h>
+#include <cmath>
 #include <iostream>
 
 using namespace OpenGL;
@@ -13,23 +15,35 @@ const glm::vec3 glFigure::Color::WHITE  = glm::vec3(1.0f, 1.0f, 1.0f);
 const glm::vec3 glFigure::Color::NONE   = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glFigure::glFigure(glm::vec3 center) {
-    this->center = center + SIZE;
     model = glm::translate(glm::mat4(1.0f), center);
+    this->center = &model[3];
+    LOGICAL_POSITION = center;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     texture = new glTexture("side.png");
 }
 
-bool glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
+double glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
 {
     using namespace glm;
-    vec3 oc = ray_origin_wor - center;
+    vec3 oc = ray_origin_wor - (vec3(*center * 3.5f)); // смещение точки относительно камеры + разнос
     auto a = dot(ray_direction_wor, ray_direction_wor);
     auto b = 2.0 * dot(oc, ray_direction_wor);
-    auto c = dot(oc, oc) - 2 * 2;
+    auto c = dot(oc, oc) - 1.8 * 1.8;
     auto discriminant = b * b - 4 * a * c;
-    return (discriminant > 0);
+    if (discriminant < 0) // пересечения нет
+        return 0.0;
+    discriminant = sqrt(discriminant);
+    auto t = (-0.5) * (b + discriminant) / a;
+    double distance = sqrt(a) * t;
+    return distance;
+}
+
+void glFigure::orbit_rotate(double pitch, double yaw)
+{
+    glm::qua <float> q = glm::qua <float>(glm::radians(glm::vec3(pitch, yaw, 0.0f)));
+    model = glm::mat4_cast(q) * model;
 }
 
 glFigure::~glFigure() {
@@ -146,9 +160,14 @@ const glm::vec3* glCubes::Color::TOP =    &glFigure::Color::YELLOW;
 
 glCubes::glCubes(uchar n)
     :glFigures(n) {
-    for(uchar z = 0; z < n_row; z++) {
-        for(uchar y = 0; y < n_row; y++)
-            for(uchar x = 0; x < n_row; x++) {
+    char min = - n_row / 2.0f, max = n_row / 2.0f;
+    //if (n_row % 2 == 0) {
+    //    min += 0.5f;
+    //    max -= 0.5f;
+    //}
+    for(char z = min; z <= max; z++) {
+        for(char y = min; y <= max; y++)
+            for(char x = min; x <= max; x++) {
                 
                 glm::vec3 back =   glFigure::Color::NONE;
                 glm::vec3 front =  glFigure::Color::NONE;
@@ -157,14 +176,14 @@ glCubes::glCubes(uchar n)
                 glm::vec3 bottom = glFigure::Color::NONE;
                 glm::vec3 top =    glFigure::Color::NONE;
                 
-                if(x == 0) left = *glCubes::Color::LEFT;
-                if (x == n_row-1) right = *glCubes::Color::RIGHT;
+                if(x == min) left = *glCubes::Color::LEFT;
+                if (x == max) right = *glCubes::Color::RIGHT;
          
-                if (y == 0) bottom = *glCubes::Color::BOTTOM;
-                if (y == n_row - 1) top = *glCubes::Color::TOP;
+                if (y == min) bottom = *glCubes::Color::BOTTOM;
+                if (y == max) top = *glCubes::Color::TOP;
                 
-                if (z == 0) back = *glCubes::Color::BACK;
-                if (z == n_row - 1) front = *glCubes::Color::FRONT;
+                if (z == min) back = *glCubes::Color::BACK;
+                if (z == max) front = *glCubes::Color::FRONT;
 
                 Cube* configured = new Cube(glm::vec3(x, y, z),
                     back, front,
@@ -183,16 +202,42 @@ void glCubes::draw(glShaderProgram* sh_program) {
     }
 }
 
-bool glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor) {
-    std::cout << "SHOOT!" << std::endl;
+glFigure* glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor) {
+    double cur_distance = 0.0, min_distance = DBL_MAX;
+    glFigure *selected_figure = nullptr;
     for (auto it = figures.begin(); it != figures.end(); ++it) {
-        if((*it)->is_hit(ray_origin_wor, ray_direction_wor)) {
-            std::cout << "LUCKY STRIKE!" << std::endl;
-            return true;
-        }
+        cur_distance = (*it)->is_hit(ray_origin_wor, ray_direction_wor);
+        if (cur_distance > 0.0 && cur_distance < min_distance) {
+            selected_figure = *it;
+            min_distance = cur_distance;
+        } 
     }
-    return false;
+    
+
+    if (selected_figure) {
+        std::cout << selected_figure->center->x << " | " << selected_figure->center->y << " | " << selected_figure->center->z << " | " << std::endl;
+        std::cout << std::endl;
+    }
+    return selected_figure;
 }
+
+void glFigures::rotate_lineH(glFigure* fixed_figure, double degree)
+{
+    for (auto it = figures.begin(); it != figures.end(); ++it) {    
+        if ((*it)->LOGICAL_POSITION.y == fixed_figure->LOGICAL_POSITION.y)
+            (*it)->orbit_rotate(0.0, degree);
+    }
+}
+
+void glFigures::rotate_lineV(glFigure* fixed_figure, double degree)
+{
+    for (auto it = figures.begin(); it != figures.end(); ++it) {
+        if ((*it)->LOGICAL_POSITION.x == fixed_figure->LOGICAL_POSITION.x)
+            (*it)->orbit_rotate(degree, 0.0);       
+    }
+}
+
+
 
 glCubes::~glCubes() {
 
