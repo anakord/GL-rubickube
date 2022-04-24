@@ -241,6 +241,7 @@ void glFigures::stable(glFigure* selected_figure) {
                     (*it)->addOrbitRotate(0.0, fixed_positions - (*it)->d_yaw);
                 else  if((*it)->d_yaw <= fixed_positions - 45.0 && (*it)->d_yaw >= previous)
                     (*it)->addOrbitRotate(0.0, previous - (*it)->d_yaw);
+            
             }
                 (*it)->d_yaw = 0.0;
         }
@@ -258,6 +259,9 @@ void glFigures::stable(glFigure* selected_figure) {
             }
             (*it)->d_pitch = 0.0;
         }
+        (*it)->LOGICAL_POSITION.x = round((*it)->center->x);
+        (*it)->LOGICAL_POSITION.y = round((*it)->center->y);
+        (*it)->LOGICAL_POSITION.z = round((*it)->center->z);
     }
 }
 
