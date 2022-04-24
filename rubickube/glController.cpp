@@ -6,7 +6,7 @@ double glController::inputX = 0.0, glController::inputY = 0.0;
 glCamera* glController::camera = nullptr;
 glFigures* glController::figures = nullptr; // все фигуры
 glFigure* glController::selected_figure = nullptr;
-glController::Mode glController::current_mode = glController::Mode::None;
+glController::Mode glController::current_mode = glController::Mode::NONE;
 
 glController::glController(void* context, glCamera* camera, glFigures* figures)
 {
@@ -48,6 +48,8 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         current_mode = Mode::NONE;
+        if(selected_figure)
+            figures->stable(selected_figure); // стабилизировать вращение к ближайшему углу
         selected_figure = nullptr;
         return;
     }
@@ -72,9 +74,9 @@ void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, d
         camera->changeDegree(glController::inputX - curX, glController::inputY - curY);
         break;
     case Mode::SELECTED:
-        //if (abs(glController::inputX - curX) > abs(glController::inputY - curY))
+        if (abs(glController::inputX - curX) > abs(glController::inputY - curY))
             current_mode = Mode::HORIZONTAL_ROTATION;
-        //else current_mode = Mode::Vertical_Rotation;
+        else current_mode = Mode::VERTICAL_ROTATION;
         break;
     case Mode::HORIZONTAL_ROTATION:
         figures->rotate_lineH(selected_figure, glController::inputX - curX);
