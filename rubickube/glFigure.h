@@ -38,10 +38,10 @@ namespace OpenGL {
 		glm::mat4 getModel() { return model; };
 		virtual void draw() =0;
 		double is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
-		void addOrbitRotate(double pitch, double yaw); // изменяет вращение на отколнение
+		void addOrbitRotate(float pitch, float yaw); // изменяет вращение на отколнение
 		glm::vec4* center; // Реальный центр в пространстве координат
 		glm::vec3 LOGICAL_POSITION = glm::vec3(0); // Логическая позиция, не меняется при изменении реальной позиции
-		double d_pitch = 0.0, d_yaw = 0.0; // углы отклонения от нормы
+		float d_pitch = 0.0f, d_yaw = 0.0f; // углы отклонения от нормы
 		~glFigure();
 	protected:
 		glm::mat4 model =glm::mat4(1.0f);
@@ -57,8 +57,8 @@ namespace OpenGL {
 		glFigures(uchar n); // размерность фигуры
 		glFigure* is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor); // null - если ничего не выбрано
 		void stable(glFigure* selected_figure);
-		void rotate_lineH(glFigure* selected_figure, double degree);
-		void rotate_lineV(glFigure* selected_figure, double degree);
+		void rotate_lineH(glFigure* selected_figure, float degree);
+		void rotate_lineV(glFigure* selected_figure, float degree);
 		virtual void draw(glShaderProgram* sh_program) =0; 
 		~glFigures();
 	protected:

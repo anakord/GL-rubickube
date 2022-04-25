@@ -17,7 +17,7 @@
 
 #define DEFAULT_WIDTH 640
 #define DEFAULT_HEIGTH 480
-#define DEFAULT_SIZE 3
+#define DEFAULT_SIZE 10
 
 // Windowed opengl Application Class
 namespace OpenGL {
