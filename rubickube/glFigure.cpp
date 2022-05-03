@@ -28,10 +28,11 @@ glFigure::glFigure(glm::vec3 center) {
 double glFigure::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
 {
     using namespace glm;
-    vec3 oc = ray_origin_wor - (vec3(*center * 3.5f)); // смещение точки относительно камеры + разнос
+    vec3 oc = ray_origin_wor - (vec3(*center)); // смещение точки относительно камеры + разнос
+    //vec3 oc = ray_origin_wor - (getCenter() * 2.0f); // смещение точки относительно камеры + разнос
     auto a = dot(ray_direction_wor, ray_direction_wor);
     auto b = 2.0 * dot(oc, ray_direction_wor);
-    auto c = dot(oc, oc) - 1.8 * 1.8;
+    auto c = dot(oc, oc) - 1.0f * 1.0f;
     auto discriminant = b * b - 4 * a * c;
     if (discriminant < 0) // пересечения нет
         return 0.0;
@@ -271,7 +272,6 @@ void glFigures::stable(glFigure* selected_figure) {
         (*it)->LOGICAL_POSITION.x = round((*it)->center->x);
         (*it)->LOGICAL_POSITION.y = round((*it)->center->y);
         (*it)->LOGICAL_POSITION.z = round((*it)->center->z);
-        std::cout <<"STABLE: " << (*it)->LOGICAL_POSITION.x << " | " << (*it)->LOGICAL_POSITION.y << " | " << (*it)->LOGICAL_POSITION.z << " | " << std::endl;
     }
 }
 

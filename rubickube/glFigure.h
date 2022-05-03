@@ -39,6 +39,10 @@ namespace OpenGL {
 		virtual void draw() =0;
 		double is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
 		void addOrbitRotate(float pitch, float yaw); // изменяет вращение на отколнение
+		glm::vec3 getCenter() {
+			glm::mat4 viewModel = glm::inverse(model);
+			return viewModel[3];
+		}
 		glm::vec4* center; // Реальный центр в пространстве координат
 		glm::vec3 LOGICAL_POSITION = glm::vec3(0.0f); // Логическая позиция, не меняется при изменении реальной позиции
 		float d_pitch = 0.0f, d_yaw = 0.0f; // углы отклонения от нормы

@@ -42,42 +42,16 @@ void glCamera::setPosition()
     view = glm::rotate(view, GLfloat(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));  
 }
 
-glm::vec3 glCamera::castRay(double mouse_x, double mouse_y)
+glm::vec3 glCamera::castRay(float mouse_x, float mouse_y)
 {
-    glm::vec3 ray_ndc = getNormalisedDeviceCoordinates(mouse_x, mouse_y, screen_width, screen_height);
-    // we want our ray's z to point forwards - this is usually the negative z direction in OpenGL style
-    glm::vec4 ray_clip = glm::vec4(ray_ndc.x, ray_ndc.y, -1.0, 1.0);
-    glm::vec4 ray_eye = toEyeCoords(ray_clip);
-    glm::vec3 ray_world = toWorldCoords(ray_eye);
-    return ray_world;
+    float norm_x = mouse_x / (screen_width * 0.5f) - 1.0f; // Нормализация позиции курсора
+    float norm_y = mouse_y / (screen_height * 0.5f) - 1.0f;
+    glm::mat4 invVP = glm::inverse(projection * view);
+    glm::vec4 screenPos = glm::vec4(norm_x, -norm_y, 1.0f, 1.0f);
+    glm::vec4 worldPos = invVP * screenPos;
+    glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
+    return dir;
 }
 OpenGL::glCamera::~glCamera()
 {
-}
-glm::vec3 glCamera::getNormalisedDeviceCoordinates(double mouse_x, double mouse_y, double screen_width, double screen_height)
-{
-    double ndc_x = (2.0f * mouse_x) / (double)screen_width - 1.0f;
-    double ndc_y = 1.0f - (2.0f * mouse_y) / (double)screen_height;
-    double ndc_z = 1.0;
-    return glm::vec3(ndc_x, ndc_y, ndc_z);
-}
-
-/*
- * normally, to get into clip space from eye space we multiply the vector by a projection matrix
- * we can go backwards by multiplying by the inverse of this matrix
- */
-glm::vec4 glCamera::toEyeCoords(glm::vec4 ray_clip)
-{
-    glm::vec4 ray_eye = projection * ray_clip;
-    // Now, we only needed to un-project the x,y part, so let's manually set the z,w part to mean "forwards, and not a point"
-    ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
-    return ray_eye;
-
-}
-
-glm::vec3 glCamera::toWorldCoords(glm::vec4 ray_eye)
-{
-    glm::vec3 ray_world = projection * ray_eye;
-    //ray_world = glm::normalize(ray_world);
-    return ray_world;
 }

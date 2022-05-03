@@ -59,7 +59,10 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
         selected_figure = figures->is_hit(camera->getPos(), camera->castRay(mouseX, mouseY));
         if (!selected_figure)
             current_mode = Mode::CAMERA;
-        else current_mode = Mode::SELECTED;
+        else {
+            std::cout << camera->getPos().x << "  " << camera->getPos().y << "  " << camera->getPos().z << "  " << std::endl;
+            current_mode = Mode::SELECTED;
+        }
         glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
     }
 }

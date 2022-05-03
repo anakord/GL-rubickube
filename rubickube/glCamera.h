@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -18,29 +18,30 @@ namespace OpenGL {
 		glm::mat4 getView() const { return view; };
 		glm::mat4 getProjection() const { return projection; };
 		
-		glm::vec3 getPos() { return view[3]; };
+		glm::vec3 getPos() {
+			glm::mat4 viewModel = glm::inverse(view);
+			std::cout << viewModel[3].x << "  " << viewModel[3].y << "  " << viewModel[3].z << "  " << std::endl; // Ð¾ÐºÐµÐ¹
+			return viewModel[3];
+		};
 
 		void changeScale(double k);
 		void changeDegree(double x_k, double y_k);
-		void setPosition(); // çàãðóçêà ïîçèöèè êàìåðû â øåéäåð
-		glm::vec3 castRay(double mouse_x, double mouse_y);
+		void setPosition(); // Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ° Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ð¸ ÐºÐ°Ð¼ÐµÑ€Ñ‹ Ð² ÑˆÐµÐ¹Ð´ÐµÑ€
+		glm::vec3 castRay(float mouse_x, float mouse_y);
 
 		~glCamera();
 	private:
-		glm::vec3 getNormalisedDeviceCoordinates(double mouse_x, double mouse_y, double screen_width, double screen_height);
-		glm::vec3 toWorldCoords(glm::vec4 ray_eye);
-		glm::vec4 toEyeCoords(glm::vec4 ray_clip);
-		
+
 		glm::mat4 view =glm::mat4(1.0f);
 		glm::mat4 projection =glm::mat4(1.0f);
 
 		glm::vec3 Pos =glm::vec3(0.0f, 0.0f, 3.0f); 
-		glm::vec3 Front =glm::vec3(0.0f, 0.0f, -1.0f); // ãîðèçîíòàëüíûé êîýôôèöèåíò
-		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f); // âåðòèêàëüíûé êîýôôèöèåíò
+		glm::vec3 Front =glm::vec3(0.0f, 0.0f, -1.0f); // Ð³Ð¾Ñ€Ð¸Ð·Ð¾Ð½Ñ‚Ð°Ð»ÑŒÐ½Ñ‹Ð¹ ÐºÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚
+		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f); // Ð²ÐµÑ€Ñ‚Ð¸ÐºÐ°Ð»ÑŒÐ½Ñ‹Ð¹ ÐºÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚
 		
 		double screen_width =0.0, screen_height =0.0;
 
-		GLfloat radius = 0.0f; // ïåðåñ÷èòûâàåòñÿ ïðè ñîçäàíèè êàìåðû
+		GLfloat radius = 0.0f; // Ð¿ÐµÑ€ÐµÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ Ð¿Ñ€Ð¸ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ð¸ ÐºÐ°Ð¼ÐµÑ€Ñ‹
 		
 		double Scale =1.0;
 		double ScaleSpeed = 0.08;
