@@ -24,22 +24,31 @@ void glCamera::changeScale(double k) {
 
 void glCamera::changeDegree(double x_k, double y_k) {
     
-    Yaw += Speed * x_k;
-    Pitch += Speed * y_k;
- 
-    if (Pitch > 360.0f)
-        Pitch = 0.0f;
+    Yaw += x_k * Speed;
+    Pitch += y_k * Speed;
+
+    // TODO: в отдельный класс (поведение градусов)
+    if (Pitch < 0.0f) Pitch = 360.0f + Pitch;
+    if (Yaw < 0.0f) Yaw = 360.0f + Yaw;
+    Pitch = Pitch - (int(Pitch) / 360) * 360.0f;// закольцовывание
+    Yaw = Yaw - (int(Yaw) / 360) * 360.0f;
     
-    if (Yaw > 360.0f)
-        Yaw = 0.0f;
+    std::cout << Pitch << "  " << Yaw << std::endl;
+    std::cout << getPos().x << " # " << getPos().y << " # " << getPos().z << std::endl;
 }
 
 void glCamera::setPosition()
 {
     using namespace glm;
     view = glm::scale(glm::lookAt(Pos, Pos + Front, Up), glm::vec3(Scale, Scale, Scale));
-    view = glm::rotate(view, GLfloat(Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-    view = glm::rotate(view, GLfloat(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));  
+    view = glm::rotate(view, glm::radians(Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));  
+}
+
+void glCamera::inverseRotation(float& pitch, float& yaw)
+{
+    //if (Pitch > 180.0f || Yaw > 180.0f)
+    //    yaw = -yaw;
 }
 
 glm::vec3 glCamera::castRay(float mouse_x, float mouse_y)
@@ -52,6 +61,7 @@ glm::vec3 glCamera::castRay(float mouse_x, float mouse_y)
     glm::vec3 dir = glm::normalize(glm::vec3(worldPos));
     return dir;
 }
+
 OpenGL::glCamera::~glCamera()
 {
 }

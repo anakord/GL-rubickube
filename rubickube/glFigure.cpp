@@ -227,71 +227,49 @@ glFigure* glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wo
             min_distance = cur_distance;
         } 
     }
-    if (selected_figure) {
-        std::cout << selected_figure->center->x << " | " << selected_figure->center->y << " | " << selected_figure->center->z << " | " << std::endl;
-        std::cout << std::endl;
-    }
+    //if (selected_figure) {
+    //    std::cout << selected_figure->center->x << " | " << selected_figure->center->y << " | " << selected_figure->center->z << " | " << std::endl;
+    //    std::cout << std::endl;
+    //}
     return selected_figure;
 }
 
 void glFigures::stable(glFigure* selected_figure) {
-    
-    float previous = 0.0f;
     for (auto it = figures.begin(); it != figures.end(); ++it) {
-
-
-        if (((*it)->LOGICAL_POSITION.y) == (selected_figure->LOGICAL_POSITION.y)) {
-            for (float fixed_positions = 360.0f; fixed_positions >= 0.0f; fixed_positions -= 90.0f) {
-                previous = fixed_positions - 90.0f;
-                if (fixed_positions == 0.0f)
-                    previous = 360.0f; // TODO: в отдельный класс (поведение градусов)
-                
+        for (float fixed_positions = 360.0f; fixed_positions >= 0.0f; fixed_positions -= 90.0f) {
+            float previous = fixed_positions - 90.0f;
+            if (fixed_positions == 0.0f)
+                previous = 360.0f;
+            if (((*it)->LOGICAL_POSITION.y) == (selected_figure->LOGICAL_POSITION.y)) {
                 if ((*it)->d_yaw >= fixed_positions - 45.0f && (*it)->d_yaw <= fixed_positions)
                     (*it)->addOrbitRotate(0.0, fixed_positions - (*it)->d_yaw);
-                else  if((*it)->d_yaw <= fixed_positions - 45.0f && (*it)->d_yaw >= previous)
+                else  if ((*it)->d_yaw <= fixed_positions - 45.0f && (*it)->d_yaw >= previous)
                     (*it)->addOrbitRotate(0.0, previous - (*it)->d_yaw);
-            
             }
-                (*it)->d_yaw = 0.0;
-        }
-        // TODO: общий обработчик
-        if (round((*it)->LOGICAL_POSITION.x) == round(selected_figure->LOGICAL_POSITION.x)) {
-            for (float fixed_positions = 360.0f; fixed_positions >= 0.0f; fixed_positions -= 90.0f) {
-                previous = fixed_positions - 90.0f;
-                if (fixed_positions == 0.0f)
-                    previous = 360.0f; // TODO: в отдельный класс (поведение градусов)
 
+            if (((*it)->LOGICAL_POSITION.x) == (selected_figure->LOGICAL_POSITION.x)) {
                 if ((*it)->d_pitch >= fixed_positions - 45.0f && (*it)->d_pitch <= fixed_positions)
                     (*it)->addOrbitRotate(fixed_positions - (*it)->d_pitch, 0.0f);
                 else  if ((*it)->d_pitch <= fixed_positions - 45.0f && (*it)->d_pitch >= previous)
                     (*it)->addOrbitRotate(previous - (*it)->d_pitch, 0.0f);
             }
-            (*it)->d_pitch = 0.0f;
         }
-        
         (*it)->LOGICAL_POSITION.x = round((*it)->center->x);
         (*it)->LOGICAL_POSITION.y = round((*it)->center->y);
         (*it)->LOGICAL_POSITION.z = round((*it)->center->z);
     }
 }
 
-void glFigures::rotate_lineH(glFigure* selected_figure, float degree)
+
+void glFigures::rotateLine(glFigure* selected_figure, float yaw, float pitch)
 {
-    for (auto it = figures.begin(); it != figures.end(); ++it) {    
+    for (auto it = figures.begin(); it != figures.end(); ++it) {      
         if ((*it)->LOGICAL_POSITION.y == selected_figure->LOGICAL_POSITION.y)
-            (*it)->addOrbitRotate(0.0f, degree);
-    }
-}
-
-void glFigures::rotate_lineV(glFigure* selected_figure, float degree)
-{
-    for (auto it = figures.begin(); it != figures.end(); ++it) {
+            (*it)->addOrbitRotate(0.0f, pitch);
         if ((*it)->LOGICAL_POSITION.x == selected_figure->LOGICAL_POSITION.x)
-            (*it)->addOrbitRotate(degree, 0.0f);       
+            (*it)->addOrbitRotate(yaw, 0.0f);
     }
 }
-
-
 
 glCubes::~glCubes() {
 

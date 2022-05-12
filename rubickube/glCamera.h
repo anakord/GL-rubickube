@@ -20,15 +20,14 @@ namespace OpenGL {
 		
 		glm::vec3 getPos() {
 			glm::mat4 viewModel = glm::inverse(view);
-			std::cout << viewModel[3].x << "  " << viewModel[3].y << "  " << viewModel[3].z << "  " << std::endl; // окей
 			return viewModel[3];
 		};
 
 		void changeScale(double k);
 		void changeDegree(double x_k, double y_k);
 		void setPosition(); // загрузка позиции камеры в шейдер
+		void inverseRotation(float& pitch, float& yaw); // в зависимости от угла взгляда камеры, инверсирует врашение рядов
 		glm::vec3 castRay(float mouse_x, float mouse_y);
-
 		~glCamera();
 	private:
 
@@ -41,12 +40,14 @@ namespace OpenGL {
 		
 		double screen_width =0.0, screen_height =0.0;
 
+
+
 		GLfloat radius = 0.0f; // пересчитывается при создании камеры
 		
-		double Scale =1.0;
-		double ScaleSpeed = 0.08;
+		float Scale =1.0f;
+		float ScaleSpeed = 0.08f;
 		
-		double Pitch =0.0, Yaw =0.0;
-		double Speed = 0.005;
+		float Pitch =0.0f, Yaw =0.0f;
+		float Speed = 0.5f;
 	};
 }

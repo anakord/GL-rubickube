@@ -49,7 +49,7 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
         current_mode = Mode::NONE;
         if(selected_figure)
-            figures->stable(selected_figure); // стабилизировать вращение к ближайшему углу
+            figures->stable(selected_figure); // стабизация вращения к ближайшему углу
         selected_figure = nullptr;
         return;
     }
@@ -60,7 +60,7 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
         if (!selected_figure)
             current_mode = Mode::CAMERA;
         else {
-            std::cout << camera->getPos().x << "  " << camera->getPos().y << "  " << camera->getPos().z << "  " << std::endl;
+            //std::cout << camera->getPos().x << "  " << camera->getPos().y << "  " << camera->getPos().z << "  " << std::endl;
             current_mode = Mode::SELECTED;
         }
         glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
@@ -69,24 +69,29 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
 
 void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    double curX = inputX, curY = inputY;
+    float curX = inputX, curY = inputY;
     glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
-    
+    float move_x = glController::inputX - curX,
+          move_y = glController::inputY - curY;
     switch (current_mode) { // перемещение камеры
-    case Mode::CAMERA: 
-        camera->changeDegree(glController::inputX - curX, glController::inputY - curY);
-        break;
-    case Mode::SELECTED:
-        if (abs(glController::inputX - curX) > abs(glController::inputY - curY))
-            current_mode = Mode::HORIZONTAL_ROTATION;
-        else current_mode = Mode::VERTICAL_ROTATION;
-        break;
-    case Mode::HORIZONTAL_ROTATION:
-        figures->rotate_lineH(selected_figure, glController::inputX - curX);
-        break;
-    case Mode::VERTICAL_ROTATION:
-        figures->rotate_lineV(selected_figure, glController::inputY - curY);
-        break;
+        case Mode::CAMERA: 
+            camera->changeDegree(move_x, move_y);
+            break;
+        case Mode::SELECTED: 
+            std::cout << selected_figure->center->x << "  " << selected_figure->center->y << "  " << selected_figure->center->z << "  " << std::endl;
+            if (abs(move_x) > abs(move_y))
+                current_mode = Mode::HORIZONTAL_ROTATION;
+            else current_mode = Mode::VERTICAL_ROTATION;
+            
+            break;
+        case Mode::HORIZONTAL_ROTATION: 
+            figures->rotateLine(selected_figure, 0.0f, move_x);
+            break;
+        case Mode::VERTICAL_ROTATION: 
+            //move_y = camera->getPos().z > 0.0f ? move_y : -move_y;
+            //camera->inverseRotation(move_x, move_y);
+            figures->rotateLine(selected_figure, move_y, 0.0f);
+            break;
     }
 }
 

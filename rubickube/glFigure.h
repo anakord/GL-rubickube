@@ -61,8 +61,7 @@ namespace OpenGL {
 		glFigures(uchar n); // размерность фигуры
 		glFigure* is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor); // null - если ничего не выбрано
 		void stable(glFigure* selected_figure);
-		void rotate_lineH(glFigure* selected_figure, float degree);
-		void rotate_lineV(glFigure* selected_figure, float degree);
+		void rotateLine(glFigure* selected_figure, float yaw, float pitch);
 		virtual void draw(glShaderProgram* sh_program) =0; 
 		~glFigures();
 	protected:

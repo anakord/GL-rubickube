@@ -9,11 +9,12 @@ namespace OpenGL {
 	public:
 		glController(void* context, glCamera* camera, glFigures* figures);
 		virtual void loadEvents() = 0;
-		enum class Mode {NONE, // режим не выбран 
-						 CAMERA, // вращение камеры
-						 SELECTED, // фигура выбрана (промежуточный этап)
-						 HORIZONTAL_ROTATION, // вращение по горизонтали
-						 VERTICAL_ROTATION }; // вращение по вертикали 
+		enum class Mode {NONE,     // режим не выбран 
+						 CAMERA,   // вращение камеры
+						 SELECTED,  // фигура выбрана (промежуточный этап)
+			             HORIZONTAL_ROTATION, // вращение по горизонтали относительно взгляда камеры
+						 VERTICAL_ROTATION // вращение по вертикали относительно взгляда камеры
+        }; 
 		double getInputX() { return inputX; }
 		double getInputY() { return inputY; }
 	protected:
