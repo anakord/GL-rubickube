@@ -5,7 +5,7 @@
 // APPLICATION RUNNER
 int main()
 {
-	OpenGL::glApp app(800, 600);
+	OpenGL::glApp app(DEFAULT_WIDTH, DEFAULT_HEIGTH);
 	app.run();
 	return 0;
 }

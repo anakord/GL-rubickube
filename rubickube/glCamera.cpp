@@ -33,8 +33,8 @@ void glCamera::changeDegree(double x_k, double y_k) {
     Pitch = Pitch - (int(Pitch) / 360) * 360.0f;// закольцовывание
     Yaw = Yaw - (int(Yaw) / 360) * 360.0f;
     
-    std::cout << Pitch << "  " << Yaw << std::endl;
-    std::cout << getPos().x << " # " << getPos().y << " # " << getPos().z << std::endl;
+    //std::cout << Pitch << "  " << Yaw << std::endl;
+    //std::cout << getPos().x << " # " << getPos().y << " # " << getPos().z << std::endl;
 }
 
 void glCamera::setPosition()

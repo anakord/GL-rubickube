@@ -15,8 +15,8 @@
 #include "glShader.h"
 #include "glController.h"
 
-#define DEFAULT_WIDTH 640
-#define DEFAULT_HEIGTH 480
+#define DEFAULT_WIDTH 1024
+#define DEFAULT_HEIGTH 768
 #define DEFAULT_SIZE 3
 
 // Windowed opengl Application Class

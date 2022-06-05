@@ -78,19 +78,25 @@ void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, d
             camera->changeDegree(move_x, move_y);
             break;
         case Mode::SELECTED: 
-            std::cout << selected_figure->center->x << "  " << selected_figure->center->y << "  " << selected_figure->center->z << "  " << std::endl;
+            //std::cout << selected_figure->LOGICAL_POSITION.x << "  " << selected_figure->LOGICAL_POSITION.y << "  " << selected_figure->LOGICAL_POSITION.z << "  " << std::endl;
             if (abs(move_x) > abs(move_y))
                 current_mode = Mode::HORIZONTAL_ROTATION;
             else current_mode = Mode::VERTICAL_ROTATION;
             
             break;
         case Mode::HORIZONTAL_ROTATION: 
-            figures->rotateLine(selected_figure, 0.0f, move_x);
+            //if (abs(camera->getPos().y) < abs(camera->getPos().x) + abs(camera->getPos().z)) 
+            //    figures->rotateLine(selected_figure, 0.0f, move_x, 0.0f);
+            //else 
+            //    figures->rotateLine(selected_figure, 0.0f, 0.0f, move_x);
+            figures->rotateLine(selected_figure, 0.0f, move_x, 0.0f);
             break;
         case Mode::VERTICAL_ROTATION: 
-            //move_y = camera->getPos().z > 0.0f ? move_y : -move_y;
-            //camera->inverseRotation(move_x, move_y);
-            figures->rotateLine(selected_figure, move_y, 0.0f);
+            //if (abs(camera->getPos().x) < abs(camera->getPos().y) + abs(camera->getPos().z)) 
+            //    figures->rotateLine(selected_figure, move_y, 0.0f, 0.0f);
+            //else 
+            //    figures->rotateLine(selected_figure, 0.0f, 0.0f, move_y);
+            figures->rotateLine(selected_figure, move_y, 0.0f, 0.0f);
             break;
     }
 }
