@@ -34,20 +34,18 @@ namespace OpenGL {
 		glm::mat4 view =glm::mat4(1.0f);
 		glm::mat4 projection =glm::mat4(1.0f);
 
-		glm::vec3 Pos =glm::vec3(0.0f, 0.0f, 3.0f); 
-		glm::vec3 Front =glm::vec3(0.0f, 0.0f, -1.0f); // горизонтальный коэффициент
-		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f); // вертикальный коэффициент
+		glm::vec3 Pos =glm::vec3(.0f, .0f, 3.0f); 
+		glm::vec3 Front =glm::vec3(.0f, .0f, -1.0f); // горизонтальный коэффициент
+		glm::vec3 Up = glm::vec3(.0f, 1.0f, .0f); // вертикальный коэффициент
 		
 		double screen_width =0.0, screen_height =0.0;
 
-
-
-		GLfloat radius = 0.0f; // пересчитывается при создании камеры
+		GLfloat radius = .0f; // пересчитывается при создании камеры
 		
 		float Scale =1.0f;
 		float ScaleSpeed = 0.08f;
 		
-		float Pitch =0.0f, Yaw =0.0f;
+		float Pitch =.0f, Yaw =.0f;
 		float Speed = 0.5f;
 	};
 }

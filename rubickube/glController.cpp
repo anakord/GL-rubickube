@@ -44,6 +44,8 @@ void glMouseController::key_callback(GLFWwindow* window, int key, int scancode, 
 }
 */
 
+Face* selected_face = nullptr;
+
 void glMouseController::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
@@ -56,11 +58,12 @@ void glMouseController::mouse_button_callback(GLFWwindow* window, int button, in
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         double mouseX = 0.0, mouseY = 0.0;
         glfwGetCursorPos(window, &mouseX, &mouseY);
-        selected_figure = figures->is_hit(camera->getPos(), camera->castRay(mouseX, mouseY));
+        Face* cur_face = figures->getSelectedFace(camera->getPos(), camera->castRay(mouseX, mouseY));
+        selected_figure = figures->getSelectedFigure(cur_face, camera->getPos(), camera->castRay(mouseX, mouseY));
         if (!selected_figure)
             current_mode = Mode::CAMERA;
         else {
-            //std::cout << camera->getPos().x << "  " << camera->getPos().y << "  " << camera->getPos().z << "  " << std::endl;
+            selected_face = cur_face;
             current_mode = Mode::SELECTED;
         }
         glfwGetCursorPos(window, &glController::inputX, &glController::inputY);
@@ -79,24 +82,17 @@ void glMouseController::mouse_cursor_callback(GLFWwindow* window, double xpos, d
             break;
         case Mode::SELECTED: 
             //std::cout << selected_figure->LOGICAL_POSITION.x << "  " << selected_figure->LOGICAL_POSITION.y << "  " << selected_figure->LOGICAL_POSITION.z << "  " << std::endl;
+
             if (abs(move_x) > abs(move_y))
                 current_mode = Mode::HORIZONTAL_ROTATION;
             else current_mode = Mode::VERTICAL_ROTATION;
             
             break;
-        case Mode::HORIZONTAL_ROTATION: 
-            //if (abs(camera->getPos().y) < abs(camera->getPos().x) + abs(camera->getPos().z)) 
-            //    figures->rotateLine(selected_figure, 0.0f, move_x, 0.0f);
-            //else 
-            //    figures->rotateLine(selected_figure, 0.0f, 0.0f, move_x);
-            figures->rotateLine(selected_figure, 0.0f, move_x, 0.0f);
+        case Mode::HORIZONTAL_ROTATION:
+            figures->rotateLine(selected_figure, selected_face->rotationRule_X(move_x, move_y));
             break;
         case Mode::VERTICAL_ROTATION: 
-            //if (abs(camera->getPos().x) < abs(camera->getPos().y) + abs(camera->getPos().z)) 
-            //    figures->rotateLine(selected_figure, move_y, 0.0f, 0.0f);
-            //else 
-            //    figures->rotateLine(selected_figure, 0.0f, 0.0f, move_y);
-            figures->rotateLine(selected_figure, move_y, 0.0f, 0.0f);
+            figures->rotateLine(selected_figure, selected_face->rotationRule_Y(move_x, move_y));
             break;
     }
 }

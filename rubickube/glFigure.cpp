@@ -6,14 +6,19 @@
 
 using namespace OpenGL;
 
+// ### CONSTS ###
+
 const float glFigure::SIZE = 0.5f;
-const glm::vec3 glFigure::Color::RED    = glm::vec3(1.0f, 0.0f, 0.0f);
-const glm::vec3 glFigure::Color::GREEN  = glm::vec3(0.0f, 1.0f, 0.0f);
-const glm::vec3 glFigure::Color::BLUE   = glm::vec3(0.0f, 0.0f, 1.0f);
-const glm::vec3 glFigure::Color::YELLOW = glm::vec3(1.0f, 1.0f, 0.0f);
-const glm::vec3 glFigure::Color::PURPLE = glm::vec3(1.0f, 0.0f, 1.0f);
+const glm::vec3 glFigure::Color::RED    = glm::vec3(1.0f, .0f, .0f);
+const glm::vec3 glFigure::Color::GREEN  = glm::vec3(.0f, 1.0f, .0f);
+const glm::vec3 glFigure::Color::BLUE   = glm::vec3(.0f, .0f, 1.0f);
+const glm::vec3 glFigure::Color::YELLOW = glm::vec3(1.0f, 1.0f, .0f);
+const glm::vec3 glFigure::Color::PURPLE = glm::vec3(1.0f, .0f, 1.0f);
 const glm::vec3 glFigure::Color::WHITE  = glm::vec3(1.0f, 1.0f, 1.0f);
-const glm::vec3 glFigure::Color::NONE   = glm::vec3(0.0f, 0.0f, 0.0f);
+const glm::vec3 glFigure::Color::NONE   = glm::vec3(.0f, .0f, .0f);
+
+// ___ CONSTS ___
+
 
 glFigure::glFigure(glm::vec3 center) {
     model = glm::translate(glm::mat4(1.0f), center);
@@ -49,9 +54,9 @@ void glFigure::addOrbitRotate(float pitch, float yaw, float roll)
     d_yaw += yaw;
     d_roll += roll;
     // TODO: в отдельный класс (поведение градусов)
-    if (d_pitch < 0.0f) d_pitch = 360.0f + d_pitch;
-    if (d_yaw < 0.0f) d_yaw = 360.0f + d_yaw;
-    if (d_roll < 0.0f) d_roll = 360.0f + d_roll;
+    if (d_pitch < .0f) d_pitch = 360.0f + d_pitch;
+    if (d_yaw < .0f) d_yaw = 360.0f + d_yaw;
+    if (d_roll < .0f) d_roll = 360.0f + d_roll;
     d_pitch = d_pitch - (int(d_pitch) / 360) * 360.0f;// закольцовывание
     d_yaw = d_yaw - (int(d_yaw) / 360) * 360.0f;
     d_roll = d_roll - (int(d_roll) / 360) * 360.0f;
@@ -75,52 +80,52 @@ glCube::glCube(glm::vec3 center,
 
     vertex vertices[] = {
                                          // BACK
-       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 0.0f),
-       glm::vec3( SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 0.0f),
+       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(.0f, .0f),
+       glm::vec3( SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(1.0f, .0f),
        glm::vec3( SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 1.0f),
        glm::vec3( SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3(-SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 1.0f),
-       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3(-SIZE,  SIZE, -SIZE),  back_color,  glm::vec2(.0f, 1.0f),
+       glm::vec3(-SIZE, -SIZE, -SIZE),  back_color,  glm::vec2(.0f, .0f),
                                         
                                          // FRONT
-       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 0.0f),
-       glm::vec3( SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 0.0f),
+       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(.0f, .0f),
+       glm::vec3( SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(1.0f, .0f),
        glm::vec3( SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 1.0f),
        glm::vec3( SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(1.0f, 1.0f),
-       glm::vec3(-SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 1.0f),
-       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(0.0f, 0.0f),
+       glm::vec3(-SIZE,  SIZE,  SIZE),  front_color,  glm::vec2(.0f, 1.0f),
+       glm::vec3(-SIZE, -SIZE,  SIZE),  front_color,  glm::vec2(.0f, .0f),
                                         
                                          // LEFT
-        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, .0f),
         glm::vec3(-SIZE,  SIZE, -SIZE), left_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(-SIZE, -SIZE,  SIZE), left_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), left_color,  glm::vec2(.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE,  SIZE), left_color,  glm::vec2(.0f, .0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), left_color,  glm::vec2(1.0f, .0f),
                                          
                                          // RIGHT
-        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, .0f),
         glm::vec3(SIZE,  SIZE, -SIZE),  right_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(0.0f, 1.0f),
-        glm::vec3(SIZE, -SIZE,  SIZE),  right_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, 0.0f),
+        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(.0f, 1.0f),
+        glm::vec3(SIZE, -SIZE, -SIZE),  right_color,  glm::vec2(.0f, 1.0f),
+        glm::vec3(SIZE, -SIZE,  SIZE),  right_color,  glm::vec2(.0f, .0f),
+        glm::vec3(SIZE,  SIZE,  SIZE),  right_color,  glm::vec2(1.0f, .0f),
                                         
                                          // BOTTOM
-        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(.0f, 1.0f),
         glm::vec3( SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(-SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, .0f),
+        glm::vec3( SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(1.0f, .0f),
+        glm::vec3(-SIZE, -SIZE,  SIZE), bottom_color,  glm::vec2(.0f, .0f),
+        glm::vec3(-SIZE, -SIZE, -SIZE), bottom_color,  glm::vec2(.0f, 1.0f),
                                                  
                                         // TOP
-        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(0.0f, 1.0f),
+        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(.0f, 1.0f),
         glm::vec3( SIZE,  SIZE, -SIZE), top_color,  glm::vec2(1.0f, 1.0f),
-        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, 0.0f),
-        glm::vec3(-SIZE,  SIZE,  SIZE), top_color,  glm::vec2(0.0f, 0.0f),
-        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(0.0f, 1.0f)
+        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, .0f),
+        glm::vec3( SIZE,  SIZE,  SIZE), top_color,  glm::vec2(1.0f, .0f),
+        glm::vec3(-SIZE,  SIZE,  SIZE), top_color,  glm::vec2(.0f, .0f),
+        glm::vec3(-SIZE,  SIZE, -SIZE), top_color,  glm::vec2(.0f, 1.0f)
     };
  
     glBindVertexArray(VAO); // set arrays' obj
@@ -152,10 +157,13 @@ glCube::~glCube() {
     
 }
 
-Face::Face(glm::vec3 point, glm::vec3 normal)
+Face::Face(glm::vec3 point, glm::vec3 normal, 
+           glm::vec3(*rot_func_X)(double x, double y), glm::vec3(*rot_func_Y)(double x, double y))
 {
     this->point = point;
     this->normal = normal;
+    this->rotationRule_X = rot_func_X;
+    this->rotationRule_Y = rot_func_Y;
 }
 
 
@@ -176,6 +184,8 @@ double Face::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor)
             return distance(ray_origin_wor, O);
         }
     }
+
+    return .0f;
 }
 
 Face::~Face() {
@@ -219,12 +229,35 @@ glCubes::glCubes(uchar n)
     }
 
     faces.resize(N_FACES);
-    faces[FRONT] = new Face(vec3(0.0f, 0.0f, max), vec3(0.0f, 0.0f, 1.0f)); //FRONT
-    faces[BACK] = new Face(vec3(0.0f, 0.0f, min), vec3(0.0f, 0.0f, -1.0f)); // BACK
-    faces[TOP] = new Face(vec3(0.0f, max, 0.0f), vec3(0.0f, 1.0f, 0.0f)); // TOP
-    faces[BOTTOM] = new Face(vec3(0.0f, min, 0.0f), vec3(0.0f, -1.0f, 0.0f)); // BOTTOM
-    faces[RIGHT] = new Face(vec3(max, 0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)); // RIGHT
-    faces[LEFT] = new Face(vec3(min, 0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)); // LEFT
+    faces[FRONT] =  new Face(vec3(.0f, .0f, max), 
+                             vec3(.0f, .0f, 1.0f), 
+         [](double x, double y) { return glm::vec3(.0f, x, .0f); }, 
+         [](double x, double y) { return glm::vec3(y, .0f, .0f); }); //FRONT
+
+    faces[BACK] =   new Face(vec3(.0f, .0f, min), 
+                             vec3(.0f, .0f, -1.0f),
+        [](double x, double y) { return glm::vec3(.0f, x, .0f); }, 
+        [](double x, double y) { return glm::vec3(-y, .0f, .0f); }); // BACK
+
+    faces[TOP] =    new Face(vec3(.0f, max, .0f), 
+                             vec3(.0f, 1.0f, .0f), 
+        [](double x, double y) { return glm::vec3(.0f, .0f, -x); },
+        [](double x, double y) { return glm::vec3(y, .0f, .0f); });// TOP
+
+    faces[BOTTOM] = new Face(vec3(.0f, min, .0f), 
+                             vec3(.0f, -1.0f, .0f),
+        [](double x, double y) { return glm::vec3(.0f, .0f, x) ; },
+        [](double x, double y) { return glm::vec3(-y, .0f, .0f); }); // BOTTOM
+
+    faces[RIGHT] =  new Face(vec3(max, .0f, .0f), 
+                             vec3(1.0f, .0f, .0f),
+        [](double x, double y) { return glm::vec3(.0f, x, .0f); }, 
+        [](double x, double y) { return glm::vec3(.0f, .0f, -y); }); // BOTTOM); // RIGHT
+
+    faces[LEFT] =   new Face(vec3(min, .0f, .0f), 
+                             vec3(-1.0f, .0f, .0f),
+        [](double x, double y) { return glm::vec3(.0f, x, .0f); },
+        [](double x, double y) { return glm::vec3(.0f, .0f, y); }); // LEFT
 
 
     for(float z = min; z <= max; z++) {
@@ -284,67 +317,55 @@ void glCubes::draw(glShaderProgram* sh_program) {
     }
 }
 
-glFigure* glFigures::is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor) {
+glFigure* glFigures::getSelectedFigure(const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor) {
     
-    double cur_distance = 0.0, min_distance = DBL_MAX, max_distance = DBL_MIN;
-    Face* selected_face = nullptr;
-
-    // определение выбранной грани
-    for (auto it = faces.begin(); it != faces.end(); ++it) {
-        float denom = glm::dot((*it)->normal, ray_direction_wor);
-        if (fabs(denom) >= 0.0001f) {
-            float t = glm::dot((*it)->point - ray_origin_wor, (*it)->normal) / denom;
-            if (t >= 0.0001f) {
-                glm::vec3 O = (*it)->point + (ray_direction_wor * t);
-                cur_distance = glm::distance(ray_origin_wor, O);
-                if (denom < 0) {
-                    if (max_distance < cur_distance) {
-                        max_distance = cur_distance;
-                        selected_face = *it;
-                    }
-                } 
-            }
-        }   
-    }
-
-    cur_distance = 0.0;
-    min_distance = DBL_MAX;
+    glFigure* selected_figure = nullptr;
+    Face* selected_face = this->getSelectedFace(ray_origin_wor, ray_direction_wor);
+    if(selected_face) 
+        selected_figure = this->getSelectedFigure(selected_face, ray_origin_wor, ray_direction_wor);
     
-    glFigure *selected_figure = nullptr;
-    for (auto it = figures.begin(); it != figures.end(); ++it) {
+    return selected_figure;
+}
+
+glFigure* glFigures::getSelectedFigure(Face* face, const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor) {
+
+    double cur_distance = 0.0, min_distance = DBL_MAX;
+    // определение фигуры на выбранной грани
+    glFigure* selected_figure = nullptr;
+    for (auto it = face->figures.begin(); it != face->figures.end(); ++it) {
         cur_distance = (*it)->is_hit(ray_origin_wor, ray_direction_wor);
         if (cur_distance > 0.0 && cur_distance < min_distance) {
             selected_figure = *it;
             min_distance = cur_distance;
-        } 
+        }
     }
-
     return selected_figure;
 }
 
+
 void glFigures::stable(glFigure* selected_figure) {
     for (auto it = figures.begin(); it != figures.end(); ++it) {
-        for (float fixed_positions = 360.0f; fixed_positions >= 0.0f; fixed_positions -= 90.0f) {
+        for (float fixed_positions = 360.0f; fixed_positions >= .0f; fixed_positions -= 90.0f) {
             float previous = fixed_positions - 90.0f;
-            if (fixed_positions == 0.0f)
+            if (fixed_positions == .0f)
                 previous = 360.0f;
             if (((*it)->LOGICAL_POSITION.x) == (selected_figure->LOGICAL_POSITION.x)) {
                 if ((*it)->d_pitch >= fixed_positions - 45.0f && (*it)->d_pitch <= fixed_positions)
-                    (*it)->addOrbitRotate(fixed_positions - (*it)->d_pitch, 0.0f, 0.0f);
+                    (*it)->addOrbitRotate(fixed_positions - (*it)->d_pitch, .0f, .0f);
                 else  if ((*it)->d_pitch <= fixed_positions - 45.0f && (*it)->d_pitch >= previous)
-                    (*it)->addOrbitRotate(previous - (*it)->d_pitch, 0.0f, 0.0f);
+                    (*it)->addOrbitRotate(previous - (*it)->d_pitch, .0f, .0f);
             }
             if (((*it)->LOGICAL_POSITION.y) == (selected_figure->LOGICAL_POSITION.y)) {
                 if ((*it)->d_yaw >= fixed_positions - 45.0f && (*it)->d_yaw <= fixed_positions)
-                    (*it)->addOrbitRotate(0.0, fixed_positions - (*it)->d_yaw, 0.0f);
+                    (*it)->addOrbitRotate(0.0, fixed_positions - (*it)->d_yaw, .0f);
                 else  if ((*it)->d_yaw <= fixed_positions - 45.0f && (*it)->d_yaw >= previous)
-                    (*it)->addOrbitRotate(0.0, previous - (*it)->d_yaw, 0.0f);
+                    (*it)->addOrbitRotate(0.0, previous - (*it)->d_yaw, .0f);
             }
             if (((*it)->LOGICAL_POSITION.z) == (selected_figure->LOGICAL_POSITION.z)) {
                 if ((*it)->d_roll >= fixed_positions - 45.0f && (*it)->d_roll <= fixed_positions)
-                    (*it)->addOrbitRotate(0.0f, 0.0f, fixed_positions - (*it)->d_roll);
+                    (*it)->addOrbitRotate(.0f, .0f, fixed_positions - (*it)->d_roll);
                 else  if ((*it)->d_roll <= fixed_positions - 45.0f && (*it)->d_roll >= previous)
-                    (*it)->addOrbitRotate(0.0, 0.0f, previous - (*it)->d_roll);
+                    (*it)->addOrbitRotate(0.0, .0f, previous - (*it)->d_roll);
             }
         }
         (*it)->LOGICAL_POSITION.x = round((*it)->center->x);
@@ -353,16 +374,33 @@ void glFigures::stable(glFigure* selected_figure) {
     }
 }
 
+Face* glFigures::getSelectedFace(const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor)
+{
+    double cur_distance = 0.0, max_distance = DBL_MIN;
+    Face* selected_face = nullptr;
 
-void glFigures::rotateLine(glFigure* selected_figure, float yaw, float pitch, float roll)
+    // определение выбранной грани
+    for (auto it = faces.begin(); it != faces.end(); ++it) {
+        cur_distance = (*it)->is_hit(ray_origin_wor, ray_direction_wor);
+        if (max_distance < cur_distance) {
+            max_distance = cur_distance;
+            selected_face = *it;
+        }
+    }
+
+    return selected_face;
+}
+
+
+void glFigures::rotateLine(glFigure* selected_figure, glm::vec3 rotation)
 {
     for (auto it = figures.begin(); it != figures.end(); ++it) {      
         if ((*it)->LOGICAL_POSITION.x == selected_figure->LOGICAL_POSITION.x)
-            (*it)->addOrbitRotate(yaw, 0.0f, 0.0f);
+            (*it)->addOrbitRotate(rotation.x, .0f, .0f);
         if ((*it)->LOGICAL_POSITION.y == selected_figure->LOGICAL_POSITION.y)
-            (*it)->addOrbitRotate(0.0f, pitch, 0.0f);
+            (*it)->addOrbitRotate(.0f, rotation.y, .0f);
         if ((*it)->LOGICAL_POSITION.z == selected_figure->LOGICAL_POSITION.z)
-            (*it)->addOrbitRotate(0.0f, 0.0f, roll);
+            (*it)->addOrbitRotate(.0f, .0f, rotation.z);
     }
 }
 

@@ -28,8 +28,8 @@ void glCamera::changeDegree(double x_k, double y_k) {
     Pitch += y_k * Speed;
 
     // TODO: в отдельный класс (поведение градусов)
-    if (Pitch < 0.0f) Pitch = 360.0f + Pitch;
-    if (Yaw < 0.0f) Yaw = 360.0f + Yaw;
+    if (Pitch < .0f) Pitch = 360.0f + Pitch;
+    if (Yaw < .0f) Yaw = 360.0f + Yaw;
     Pitch = Pitch - (int(Pitch) / 360) * 360.0f;// закольцовывание
     Yaw = Yaw - (int(Yaw) / 360) * 360.0f;
     
@@ -41,8 +41,8 @@ void glCamera::setPosition()
 {
     using namespace glm;
     view = glm::scale(glm::lookAt(Pos, Pos + Front, Up), glm::vec3(Scale, Scale, Scale));
-    view = glm::rotate(view, glm::radians(Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-    view = glm::rotate(view, glm::radians(Yaw), glm::vec3(0.0f, 1.0f, 0.0f));  
+    view = glm::rotate(view, glm::radians(Pitch), glm::vec3(1.0f, .0f, .0f));
+    view = glm::rotate(view, glm::radians(Yaw), glm::vec3(.0f, 1.0f, .0f));  
 }
 
 void glCamera::inverseRotation(float& pitch, float& yaw)

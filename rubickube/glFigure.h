@@ -45,8 +45,8 @@ namespace OpenGL {
 			return viewModel[3];
 		}
 		glm::vec4* center; // Реальный центр в пространстве координат
-		glm::vec3 LOGICAL_POSITION = glm::vec3(0.0f); // Логическая позиция
-		float d_pitch = 0.0f, d_yaw = 0.0f, d_roll; // углы отклонения от нормы
+		glm::vec3 LOGICAL_POSITION = glm::vec3(.0f); // Логическая позиция
+		float d_pitch = .0f, d_yaw = .0f, d_roll; // углы отклонения от нормы
 		~glFigure();
 	protected:
 		glm::mat4 model =glm::mat4(1.0f);
@@ -58,28 +58,34 @@ namespace OpenGL {
 	// грань
 	class Face {
 	public:
-		Face(glm::vec3 point, glm::vec3 normal);
+		Face(glm::vec3 point, glm::vec3 normal, 
+			 glm::vec3(*rot_func_X)(double x, double y), glm::vec3(*rot_func_Y)(double x, double y));
 		glm::vec3 point; // точка
 		glm::vec3 normal; // вектор нормали
 		void addFigure(glFigure* figure);
+		std::vector<glFigure*> figures; // фигуры, принадлежащие данной грани
 		double is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor);
+		glm::vec3 (*rotationRule_X)(double x_r, double y_r); // переводит 2d вращение в 3d по правилам грани 
+		glm::vec3(*rotationRule_Y)(double x_r, double y_r); // переводит 2d вращение в 3d по правилам грани 
 		~Face();
 	private:
-		std::vector<glFigure*> figures; // фигуры, принадлежащие данной грани
+		
 	};
 
 	// абстрактная фигура
 	class glFigures {
 	public:
 		glFigures(uchar n); // размерность фигуры
-		glFigure* is_hit(glm::vec3 ray_origin_wor, glm::vec3 ray_direction_wor); // null - если ничего не выбрано
+		Face* getSelectedFace(const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor);
+		glFigure* getSelectedFigure(const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor);
+		glFigure* getSelectedFigure(Face * face, const glm::vec3& ray_origin_wor, const glm::vec3& ray_direction_wor);
 		void stable(glFigure* selected_figure);
-		void rotateLine(glFigure* selected_figure, float yaw, float pitch, float roll);
+		void rotateLine(glFigure* selected_figure, glm::vec3 rotation);
 		virtual void draw(glShaderProgram* sh_program) =0; 
 		~glFigures();
 	protected:
 		uchar n_row =0; // количество фигур в ряду
-		float min = 0.0f, max = 0.0f;
+		float min = .0f, max = .0f;
 		std::vector<Face*> faces;
 		std::vector<glFigure*> figures; // фигуры на экране
 	};
@@ -91,10 +97,7 @@ namespace OpenGL {
 		public glFigure
 	{
 	public:
-		/*
-		    1 - position, 
-			2 - 7 - colors of cube sides
-		*/
+
 		glCube(glm::vec3 center,
 			glm::vec3 back_color, glm::vec3 front_color,
 			glm::vec3 left_color, glm::vec3 right_color,
